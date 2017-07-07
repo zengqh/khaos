@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Impl">
+      <UniqueIdentifier>{586d354f-24de-4905-a5bb-b8332785be7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Win32">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="targetver.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\Basic.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\SampleFrame.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\SampleOperation.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\Demo1.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\Demo2.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\Demo3.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\Samples\Src\Demo4.h">
+      <Filter>Impl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\Basic.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\SampleFrame.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="Sample.cpp">
+      <Filter>Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\SampleOperation.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\Demo1.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\Demo2.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\Demo3.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Samples\Src\Demo4.cpp">
+      <Filter>Impl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Sample.ico">
+      <Filter>Win32</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Sample.rc">
+      <Filter>Win32</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="small.ico">
+      <Filter>Win32</Filter>
+    </None>
+  </ItemGroup>
+</Project>

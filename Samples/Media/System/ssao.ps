@@ -1,0 +1,366 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(float4, cParams0)
+    VAR_UNIFORM(float4, cParams1)
+    VAR_UNIFORM(float4, cParams2)
+    VAR_UNIFORM(float4, camInfo)
+    VAR_UNIFORM(sampler, mapDepth)
+    VAR_UNIFORM(sampler, mapDepthHalf)
+    VAR_UNIFORM(sampler, mapDepthQuarter)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float4, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+#define QUALITY0 1
+#define QUALITY1 1
+
+#define SSAO_VOParams           cParams0
+#define SSAO_MultiRadiiParams   cParams1
+#define SSAO_params             cParams2
+
+#define depthTargetSampler   mapDepth
+#define sceneDepthSamplerAO  mapDepthHalf
+#define sceneDepthSamplerAO2 mapDepthQuarter
+#define PS_NearFarClipDist   camInfo
+
+float GetLinearDepth( sampler2D depthSampler, float2 uv )
+{
+    return tex2D(depthSampler, uv).r;
+}
+
+float SSAO_GetDownscaledDepth( sampler2D depthSampler, float2 uv )
+{
+	return GetLinearDepth(depthSampler, uv);
+}
+
+float3 GetSampleCoords(const int iSampleID, const float2x2 mTransMat)
+{
+	// disk samples
+	static const float2 arrKernel[60] =
+	{
+		// 4 samples
+		float2(0.494679h, 0.340907h),
+		float2(0.340907h, -0.494679h),
+		float2(-0.494679h, -0.340907h),
+		float2(-0.340907h, 0.494679h),
+		// 8 samples
+		float2(0.662524f, 0.186215f),
+		float2(-0.600124f, 0.336737f),
+		float2(-0.336735f, -0.600106f),
+		float2(0.186213f, -0.662542f),
+		float2(0.600124f, -0.336719f),
+		float2(-0.66252f, -0.186198f),
+		float2(0.336719f, 0.600124f),
+		float2(-0.186198f, 0.66252f),
+		// 16 samples
+		float2(-0.512634f, 0.578115f),
+		float2(0.0401603f, 0.366545f),
+		float2(-0.106727f, 0.770193f),
+		float2(0.346231f, 0.686211f),
+		float2(-0.444221f, -0.627103f),
+		float2(0.441198f, -0.659625f),
+		float2(0.0641413f, -0.352609f),
+		float2(-0.0304475f, -0.775235f),
+		float2(-0.750843f, 0.181926f),
+		float2(0.341729f, 0.108233f),
+		float2(-0.730512f, -0.266452f),
+		float2(0.50023f, -0.30106f),
+		float2(0.670724f, 0.389655f),
+		float2(-0.316059f, 0.190378f),
+		float2(-0.305232f, -0.206824f),
+		float2(0.789564f, -0.0810729f),
+		// 32 samples
+		float2(-0.812331h, 0.0662604h),
+		float2(0.162797h, 0.081316h),
+		float2(-0.293966h, 0.360841h),
+		float2(0.779482h, 0.00353652h),
+		float2(-0.314135h, -0.372067h),
+		float2(-0.444351h, -0.134351h),
+		float2(-0.0385568h, 0.494918h),
+		float2(0.77502h, -0.311709h),
+		float2(0.351658h, 0.725828h),
+		float2(-0.632904h, -0.516299h),
+		float2(-0.207284h, 0.0423786h),
+		float2(0.588536h, 0.548769h),
+		float2(0.228539h, -0.785203h),
+		float2(0.450202h, -0.315625h),
+		float2(0.541971h, -0.63036h),
+		float2(-0.726907h, 0.377959h),
+		float2(-0.470078h, 0.148029h),
+		float2(0.220709h, 0.3969h),
+		float2(-0.262847h, 0.768219h),
+		float2(-0.531234h, 0.61706h),
+		float2(0.42611h, -0.0538984h),
+		float2(-0.0843496h, -0.811166h),
+		float2(0.206271h, -0.448091h),
+		float2(0.773975h, 0.296148h),
+		float2(-0.0569986h, -0.466765h),
+		float2(0.429435h, 0.216482h),
+		float2(-0.0984482h, -0.177056h),
+		float2(0.157366h, -0.177183h),
+		float2(-0.0323167h, 0.219528h),
+		float2(-0.381982h, -0.719027h),
+		float2(0.059316h, 0.823698h),
+		float2(-0.776818h, -0.240689h)
+	};
+
+	float3 vSampleCoords;
+	vSampleCoords.xy = mul(arrKernel[iSampleID], mTransMat);
+	// faster falloff for samples farther from center
+	vSampleCoords.z = 1.h - dot(vSampleCoords.xy, vSampleCoords.xy); // There should be sqrt after dot in theory,
+                                                                   // but it doesn't make much difference in practice,
+                                                                   // so omitted for performance here.
+
+	return vSampleCoords;
+}
+
+float ComputeVO2(const float4 vScreenTC)
+{
+	// jitter transformation matrices
+	static const float2 arrTransMat4[16] = 
+	{
+		float2( 0.h, 0.150000005960464h ),
+		float2( 0.0349416957502714h, 0.348251451864555h ),
+		float2( 0.141421614316377h, 0.141421102372463h ),
+		float2( 0.30966730031845h, 0.253191958564751h ),
+		float2( -0.0599000532579141h, 0.597002522800305h ),
+		float2( 0.h, 0.899999976158142h ),
+		float2( 0.41143876304905h, 0.503207823136974h ),
+		float2( 0.671752649563512h, 0.671750217829988h ),
+		float2( 0.0956710671184045h, 0.230969796545838h ),
+		float2( 0.129842290554906h, 0.430860730230337h ),
+		float2( 0.277164185882114h, 0.114804273513063h ),
+		float2( 0.44053033776981h, 0.236501631081938h ),
+		float2( 0.331104528855821h, 0.616741253915988h ),
+		float2( 0.382684268473618h, 0.923879186183352h ),
+		float2( 0.718102032347253h, 0.216401181001271h ),
+		float2( 1.0162686632119h, 0.420948995278045h ),
+	};
+	static const float2 arrTransMat8[16] = 
+	{
+		float2( 0.h, 0.150000005960464h ),
+		float2( 0.0682817668742493h, 0.343274811397815h ),
+		float2( 0.0765368548352116h, 0.184775839990045h ),
+		float2( 0.222245184820629h, 0.332576431204041h ),
+		float2( 0.h, 0.600000023841858h ),
+		float2( 0.175581684586882h, 0.88270664952876h ),
+		float2( 0.248744765383948h, 0.600521448992182h ),
+		float2( 0.527832299460258h, 0.789869002428081h ),
+		float2( 0.h, 0.25h ),
+		float2( 0.0877908422934408h, 0.44135332476438h ),
+		float2( 0.114805285104037h, 0.277163766868504h ),
+		float2( 0.277806476886148h, 0.415720532810332h ),
+		float2( 0.h, 0.699999988079071h ),
+		float2( 0.195090765820231h, 0.980785192125001h ),
+		float2( 0.287013201355213h, 0.692909389637514h ),
+		float2( 0.61117426239637h, 0.91458519200583h ),
+	};
+	static const float2 arrTransMat16[16] = 
+	{
+		float2( 0.h, 0.150000005960464h ),
+		float2( 0.0547245351776273h, 0.345695271991486h ),
+		float2( 0.0617731069357767h, 0.190221146173589h ),
+		float2( 0.181511048520926h, 0.356445990345249h ),
+		float2( 0.h, 0.600000023841858h ),
+		float2( 0.140720231982537h, 0.888930690996456h ),
+		float2( 0.20076258718575h, 0.618218693175861h ),
+		float2( 0.431088728404026h, 0.846559203832334h ),
+		float2( 0.h, 0.25h ),
+		float2( 0.0703601159912685h, 0.444465345498228h ),
+		float2( 0.0926596627048925h, 0.285331726346674h ),
+		float2( 0.226888807270251h, 0.445557481292238h ),
+		float2( 0.h, 0.699999988079071h ),
+		float2( 0.156355817455945h, 0.987700793938976h ),
+		float2( 0.231649147557321h, 0.713329287521525h ),
+		float2( 0.499155386813453h, 0.98022648008876h ),
+	};
+	static const float2 arrTransMat32[16] = 
+	{
+		float2( 0.h, 0.150000005960464h ),
+		float2( 0.0314574929302175h, 0.348583450505356h ),
+		float2( 0.0358059166261143h, 0.196768741233603h ),
+		float2( 0.106692580401432h, 0.385508363146191h ),
+		float2( 0.h, 0.600000023841858h ),
+		float2( 0.0808906953409623h, 0.896357435676144h ),
+		float2( 0.116369223032437h, 0.63949837602328h ),
+		float2( 0.253394871497836h, 0.91558233733992h ),
+		float2( 0.h, 0.25h ),
+		float2( 0.0404453476704812h, 0.448178717838072h ),
+		float2( 0.0537088762730457h, 0.295153119180611h ),
+		float2( 0.133365723514486h, 0.481885446752086h ),
+		float2( 0.h, 0.699999988079071h ),
+		float2( 0.0898785527598156h, 0.995952732690564h ),
+		float2( 0.134272185347117h, 0.737882768630702h ),
+		float2( 0.293404598091241h, 1.06014800583268h ),
+	};
+
+
+	// jitter params are in static arrays
+	const int2 iPixelIDs = int2(frac(vScreenTC.zw) * 4.h + 0.1h);
+	const int iPixelID = dot(iPixelIDs, int2(1, 4));
+
+	// use 3(or 2 in the case of low quality) radii of { small, medium, large }
+	// smaller radius requires less samples
+	#if !QUALITY1 && !QUALITY0   // QUALITY_LOW
+		static const int multi = 2;
+		static const int iKernelOffset[2] = { 0, 0 };
+		static const int iSamplePackets[2] = { 1, 1 };
+		const float2x2 mTransMat[2] = { { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y },
+									   { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y } };
+	#elif !QUALITY1 && QUALITY0  //QUALITY_MEDIUM
+		static const int multi = 3;
+		static const int iKernelOffset[3] = { 0, 0, 0 };
+		static const int iSamplePackets[3] = { 1, 1, 1 };
+		const float2x2 mTransMat[3] = { { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y },
+								       { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y }, 
+								       { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y } };
+	#elif QUALITY1 && !QUALITY0  // QUALITY_HIGH
+		static const int multi = 3;
+		static const int iKernelOffset[3] = { 0, 0, 4 };
+		static const int iSamplePackets[3] = { 1, 1, 2 };
+		const float2x2 mTransMat[3] = { { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y },
+									   { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y }, 
+									   { arrTransMat8[iPixelID].y, arrTransMat8[iPixelID].x, -arrTransMat8[iPixelID].x, arrTransMat8[iPixelID].y } };
+	#elif QUALITY1 && QUALITY0    // QUALITY_VERYHIGH
+		// same as QUALITY_HIGH, but a better blurring shader will be applied instead.
+		static const int multi = 3;
+		static const int iKernelOffset[3] = { 0, 0, 4 };
+		static const int iSamplePackets[3] = { 1, 1, 2 };
+		const float2x2 mTransMat[3] = { { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y },
+								       { arrTransMat4[iPixelID].y, arrTransMat4[iPixelID].x, -arrTransMat4[iPixelID].x, arrTransMat4[iPixelID].y }, 
+									   { arrTransMat8[iPixelID].y, arrTransMat8[iPixelID].x, -arrTransMat8[iPixelID].x, arrTransMat8[iPixelID].y } };
+    #else
+        assert(0);
+	#endif  
+
+	const float fCenterDepth = GetLinearDepth( depthTargetSampler, vScreenTC.xy );
+
+	// enlarge the radius when close the the camera so as to hide the low z-precision artifact
+	const float fRadiusScale = 5.h-min(fCenterDepth * 100000.h, 4.h);
+
+	float fAO = SSAO_MultiRadiiParams.z; // if this is > 1, edges will be brightened up a litte bit
+                                      // it should be 1 to be physically more correct
+	float fNearDepthRatioFinal = 1.h;
+	const float fMultiRadiiScales[3] = { SSAO_MultiRadiiParams.x, 1.h, SSAO_MultiRadiiParams.y };
+	const float fMultiRadiiBrightenUps[3] = { 1.h, 1.h, 1.5h };
+
+	for (int k = 0; k < multi; ++k)
+	{
+		// get parameters
+		float2 vTSRadius = SSAO_VOParams.xy * fRadiusScale * fMultiRadiiScales[k];
+
+		// get sphere's radius in Z dimension (linear depth space)
+		float fDSRadius = SSAO_VOParams.z * max(fCenterDepth, 1e-6h) * fRadiusScale * fMultiRadiiScales[k];
+
+		float4 fNearDepthRatio = 1.h;
+		float4 vSkyAccess = 0.h;
+		float4 vZSum = 0.h;
+
+		for (int iSamplePacket = 0; iSamplePacket < iSamplePackets[k]; iSamplePacket++)
+		{
+			float4 arrSampledDepth, arrSampleZ;
+			float3 vIrrSample;
+
+			vIrrSample = GetSampleCoords(iKernelOffset[k]+iSamplePacket*4, mTransMat[k]);	
+			vIrrSample.xy *= vTSRadius;
+			if (k == 2)
+				arrSampledDepth.x = SSAO_GetDownscaledDepth( sceneDepthSamplerAO2, vScreenTC.xy + vIrrSample.xy );
+			else
+				arrSampledDepth.x = SSAO_GetDownscaledDepth( sceneDepthSamplerAO, vScreenTC.xy + vIrrSample.xy );
+			arrSampleZ.x = vIrrSample.z;
+
+			vIrrSample = GetSampleCoords(iKernelOffset[k]+iSamplePacket*4+1, mTransMat[k]);
+			vIrrSample.xy *= vTSRadius;
+			if (k == 2)
+				arrSampledDepth.y = SSAO_GetDownscaledDepth( sceneDepthSamplerAO2, vScreenTC.xy + vIrrSample.xy );
+			else
+				arrSampledDepth.y = SSAO_GetDownscaledDepth( sceneDepthSamplerAO, vScreenTC.xy + vIrrSample.xy );
+			arrSampleZ.y = vIrrSample.z;
+
+			vIrrSample = GetSampleCoords(iKernelOffset[k]+iSamplePacket*4+2, mTransMat[k]);
+			vIrrSample.xy *= vTSRadius;
+			if (k == 2)
+				arrSampledDepth.z = SSAO_GetDownscaledDepth( sceneDepthSamplerAO2, vScreenTC.xy + vIrrSample.xy );
+			else
+				arrSampledDepth.z = SSAO_GetDownscaledDepth( sceneDepthSamplerAO, vScreenTC.xy + vIrrSample.xy );
+			arrSampleZ.z = vIrrSample.z;
+
+			vIrrSample = GetSampleCoords(iKernelOffset[k]+iSamplePacket*4+3, mTransMat[k]);
+			vIrrSample.xy *= vTSRadius;
+			if (k == 2)
+				arrSampledDepth.w = SSAO_GetDownscaledDepth( sceneDepthSamplerAO2, vScreenTC.xy + vIrrSample.xy );
+			else
+				arrSampledDepth.w = SSAO_GetDownscaledDepth( sceneDepthSamplerAO, vScreenTC.xy + vIrrSample.xy );
+			arrSampleZ.w = vIrrSample.z;
+
+			// get relative depth in [-1, 1] (unit sphere)
+			float4 vTransformedDepth = (arrSampledDepth - fCenterDepth) / fDSRadius;
+
+			// compute obscurance
+			float4 fObscurance = max(min(arrSampleZ, vTransformedDepth) + arrSampleZ, 0.h);
+
+			// tweak to smoothly invalidate occluders out of sphere
+			// multiplier affects light bleeding for high slopes
+			float4 vTransCoef = saturate(0.2h * (vTransformedDepth + arrSampleZ) + 1.h);
+			float4 vFadeOut = vTransCoef * vTransCoef;
+
+			vSkyAccess += lerp(arrSampleZ, fObscurance, vFadeOut);
+			vZSum += arrSampleZ;
+
+			// hack for accumulated value discard for near objects where ghosting most noticeable (eg. weapon)
+			if (iSamplePackets[k] > 1)
+				fNearDepthRatio = min(fNearDepthRatio, arrSampledDepth * PS_NearFarClipDist.y - 1.2h);
+			else
+				fNearDepthRatio = arrSampledDepth * PS_NearFarClipDist.y - 1.2h;
+		}
+
+		fNearDepthRatio.xy = min(fNearDepthRatio.xy, fNearDepthRatio.zw);
+		fNearDepthRatio.x = min(fNearDepthRatio.x, fNearDepthRatio.y);
+		// hack for avoiding halos around nearest objects (especially weapon)
+		if (k == 0) // for the small radius, allow more ssao for near objects
+			vSkyAccess = lerp(vZSum, vSkyAccess, saturate(fNearDepthRatio.x + 1.4h));
+		else
+			vSkyAccess = lerp(vZSum, vSkyAccess, saturate(fNearDepthRatio.x + 0.7h));
+		if (k == 1)
+			fNearDepthRatioFinal = fNearDepthRatio.x;
+
+		vSkyAccess *= fMultiRadiiBrightenUps[k];
+
+		// Visibility computation - occluded volume divided by full volume
+		fAO = min(dot( vSkyAccess, 1.0h / dot( vZSum, 1.h ) ), fAO);
+	}
+
+	// do not shadow too shallow valleys (hide artifacts caused mostly by low precision Z)
+	const float fVariance = (1.h - fAO);
+
+	fAO += fVariance * (abs(fVariance) < 0.05h);
+
+
+	// add contrast
+	fAO *= SSAO_params.y;
+
+	// attenuate
+	fAO = saturate(1.h - fAO) * SSAO_params.x;
+
+	//return float3(saturate(1.h - fAO), fCenterDepth, saturate(fNearDepthRatioFinal));
+    //return pow( saturate(1.0 - fAO), 5.0 ); 
+    return saturate(1.0 - fAO);
+}
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+	pOut.k_color = ComputeVO2(pIn.vTex).x;
+
+END_MAIN_FUNCTION()
+

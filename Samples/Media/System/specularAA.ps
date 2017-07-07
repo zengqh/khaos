@@ -1,0 +1,149 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, SurfaceParams)
+        VAR_UNIFORM(float4, baseColorA)
+        VAR_UNIFORM(float4, specularA)
+        VAR_UNIFORM(float3, emissive)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM_PACK_BEGIN(float, SpecularMaskParams)
+        VAR_UNIFORM(float4, msrMask)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM(SurfaceParams, surfaceInfo)
+    VAR_UNIFORM(SpecularMaskParams, maskSpecular)
+
+    VAR_UNIFORM(sampler,  mapSpecular)
+    VAR_UNIFORM(sampler,  mapBump)
+
+    VAR_UNIFORM(float4, targetInfo)
+    VAR_UNIFORM(float2, mipInfo)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    //#define MTR_FORBID_ALL_
+    //#define MTR_NEED_FUNC_SPECINFO_
+    //#include<materialUtil>
+
+    int pow2int( int x )
+    {
+        static const int4 tabs[4] = 
+        {
+            int4(1, 2, 4, 8),
+            int4(16, 32, 64, 128),
+            int4(256, 512, 1024, 2048),
+            int4(4096, 8192, 16384, 32768)
+        };
+
+        int hi = x / 4;
+        int lo = x % 4;
+
+        return tabs[hi][lo];
+
+        #if 0
+        int r = 1;
+
+        while ( x > 0 )
+        {
+            r = r * 2;
+            --x;
+        }
+
+        return r;
+        #endif
+    }
+
+    float3 getNormalVec( float2 uvpix )
+    {
+        // 从normalmap获取法线
+        float4 uv = float4( uvpix * targetInfo.zw, 0, 0 ); // 像素转单位，取最精细顶层
+        float3 bumpVec = tex2Dlod(mapBump, uv).xyz * 2.0 - 1.0;
+        return normalize(bumpVec);
+    }
+
+    float computeRoughness( in float2 uv, in int mipLevel, in float roughness )
+    {
+        if ( mipLevel == 0 )
+        {
+            return roughness;
+        }
+        else
+        {
+            //return 1;
+
+            float2 texelPos = uv * targetInfo.xy; // 单位转像素
+
+            float3 avgNormal = 0.0f;
+
+            // Sample all normal map texels from the base mip level that are within
+            // the footprint of the current mipmap texel
+
+            const int texelFootprint = pow2int(mipLevel);
+            const float2 topLeft = (-float(texelFootprint) / 2.0f) + 0.5f;
+
+            ATTR_LOOP
+            for ( int y = 0; y < texelFootprint; ++y )
+            {
+                ATTR_LOOP
+                for ( int x = 0; x < texelFootprint; ++x )
+                {
+                    float2 offset = topLeft + float2(x, y);
+                    float2 samplePos = floor(texelPos + offset) + 0.5f;
+
+                    float3 sampleNormal = getNormalVec(samplePos);
+                    avgNormal += sampleNormal;
+                }
+            }
+
+            // Fit a vMF lobe to NDF for this mip texel
+            avgNormal /= (texelFootprint * texelFootprint);
+
+            float r = length(avgNormal);
+            float kappa = 10000.0f;
+
+            if ( r < 1.0 )
+                kappa = (3 * r - r * r * r) / (1 - r * r);
+
+            // Compute the new roughness value
+            return sqrt(roughness * roughness + (1.0 / kappa));
+        }
+    }
+
+    float3 material_SpecularInfo_TopLevel( float2 uv )
+    {
+        #ifdef EN_SPECULARMAP
+            float3 valM = tex2Dlod( mapSpecular, float4(uv, 0, 0) ).xyz; // always top zero
+            return surfaceInfo.specularA.rgb * lerp( 1.0, valM, maskSpecular.msrMask.xyz );
+        #else
+            return surfaceInfo.specularA.rgb; // r = metallic, g = dspecular, b = roughness
+        #endif
+    }
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+    
+    // 获取顶层粗糙度信息
+    float3 msr = material_SpecularInfo_TopLevel( pIn.vTex );
+
+    // 计算合适的粗糙度
+    int2 mipInfoI = (int2)(mipInfo + 0.5); // 当前的mip信息： x=当前level y=最大level
+    float newRoughness = computeRoughness( pIn.vTex, mipInfoI.x, msr.z );
+
+    // 修改roughness
+    // 我们替换原始map中的roughness通道信息
+    pOut.k_color.rgb = tex2Dlod( mapSpecular, float4(pIn.vTex, 0, mipInfo.x) ).xyz;
+    pOut.k_color.b = newRoughness;
+    pOut.k_color.a = 1.0;
+
+END_MAIN_FUNCTION()
+

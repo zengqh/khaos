@@ -1,0 +1,126 @@
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, AmbParams)
+        VAR_UNIFORM(float3, constColor)
+        VAR_UNIFORM(float3, upperColor)
+        VAR_UNIFORM(float3, lowerColor)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM_PACK_BEGIN(float, DirLitParams)
+        VAR_UNIFORM(float3, direction)
+        VAR_UNIFORM(float3, diffuse)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM(AmbParams, ambParas)
+    VAR_UNIFORM(DirLitParams, dirLits)
+
+    VAR_UNIFORM(float3, cameraPosWorld)
+    VAR_UNIFORM(float3, jitterWorld)
+    VAR_UNIFORM(float4x4, matViewProjPrev)
+
+    VAR_UNIFORM(sampler, mapDepth)
+    VAR_UNIFORM(sampler, mapNormal)
+    VAR_UNIFORM(sampler, gbufDiffuse)
+    VAR_UNIFORM(sampler, gbufSpecular)
+    VAR_UNIFORM(sampler, mapAO)
+
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+    VAR_IN(float3, vCamVec, TEXCOORD1)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+    #include<pbrUtil>
+
+    #define MTR_FORBID_ALL_
+    #define MTR_NEED_FUNC_BASECONV_
+    #include<materialUtil>
+
+    #define USING_FUNC_GETPOSWORLD
+    #include<deferUtil>
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+  
+    // 从buffer获取位置
+    float3 objPosWorld = getFastPosWorld(pIn.vTex, pIn.vCamVec
+#if defined(EN_BIT0) 
+    -jitterWorld
+#endif
+    );
+
+    // 从buffer获取法线
+    float4 normShadow = tex2D(mapNormal, pIn.vTex);
+    float3 objNormWorld = decodeNormal( normShadow.xyz );
+
+    // 从buffer获取颜色
+    float4 gBase     = tex2D(gbufDiffuse, pIn.vTex);
+    float4 gSpecInfo = tex2D(gbufSpecular, pIn.vTex);
+
+    float4 mtrDiffuse;
+    float4 mtrSpecular;
+    material_BaseConv( gBase, gSpecInfo.xyz, mtrDiffuse, mtrSpecular );
+
+    // ao
+#if defined(EN_BIT2)
+    float ssao    = tex2D(mapAO, pIn.vTex).r;
+    float finalAO = getFinalAO( mtrDiffuse.a, ssao ); // mtrDiffuse.a = baked ao
+#else
+    float ssao    = 1;
+    float finalAO = mtrDiffuse.a;
+#endif
+
+    // simple amb light
+#if defined(HAS_SIMPLE_AMB)
+    float3 simpleAmbLight = ambParas.constColor + 
+        getSkySimpleClr( objNormWorld, ambParas.upperColor, ambParas.lowerColor );
+
+    pOut.k_color.rgb = simpleAmbLight * mtrDiffuse.rgb * finalAO;
+#else
+    pOut.k_color.rgb = 0;
+#endif
+
+#if defined(HAS_DIR_LITS) // 有平行光
+    // 阴影
+    #if defined(EN_BIT1)
+        // greatly reduces shadow mapping artifacts
+        float shadowReduce = getShadowReduce( dot(objNormWorld, dirLits.direction) );
+        float3 lDiff = dirLits.diffuse * (normShadow.a * shadowReduce);
+    #else
+        float3 lDiff = dirLits.diffuse * finalAO; // 没有阴影则用ao
+    #endif
+
+    // 着色
+    pOut.k_color.rgb +=
+        standShading( mtrDiffuse, mtrSpecular, objPosWorld, objNormWorld, 
+        cameraPosWorld, dirLits.direction, lDiff );
+#endif
+
+#if defined(EN_BIT0) 
+    //float4 cObjVelocityParams = tex2D(normalsMap,IN.baseTC.xy) ;
+	//float2 vObjVelocity = DecodeMotionVector( cObjVelocityParams );
+
+    // 该点的实际位置在前一帧的uv
+	float4 B_prevHSPos = MUL( matViewProjPrev, float4(objPosWorld, 1.0) ); 
+	B_prevHSPos /= B_prevHSPos.w;
+	
+    // 前一帧和当前帧的uv差
+	float2 tcOffsetPrev = pIn.vTex - (B_prevHSPos.xy /*+ jitterUV*/); 	
+	//tcOffsetPrev = lerp(tcOffsetPrev, vObjVelocity, cObjVelocityParams.w);
+
+    // Compress the velocity for storing it in a 8-bit render target:
+	pOut.k_color.a = sqrt(5.0 * length(tcOffsetPrev));
+#else
+    pOut.k_color.a = 0;
+#endif
+
+END_MAIN_FUNCTION()
+

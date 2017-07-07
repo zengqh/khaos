@@ -1,0 +1,48 @@
+
+#define USE_LUM_AVG     0
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapInput)
+    VAR_UNIFORM(float4, offsetParams, 4)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    int nIter = 4; // 一般机器都支持float线性采样，只要4
+ 
+    float nRecipIter = 1.0 / (float) nIter;
+
+    float vResampleSum = 0.0f;
+     
+    for ( int i = 0; i < nIter; ++i )
+    {
+        // Compute the sum of luminance throughout the sample points
+        float lumInfoAvg = tex2D(mapInput, pIn.vTex + offsetParams[i].xy).r;
+        vResampleSum += lumInfoAvg;
+    }
+  
+    // Divide the sum to complete the average
+    vResampleSum *= nRecipIter;
+
+#ifdef EN_BIT0
+    // 前面都是log平均数，最后次迭代exp还原
+	#if !USE_LUM_AVG
+		vResampleSum = exp( vResampleSum );
+	#endif
+#endif
+
+    pOut.k_color = vResampleSum;
+
+END_MAIN_FUNCTION()
+

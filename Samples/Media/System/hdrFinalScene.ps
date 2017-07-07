@@ -1,0 +1,155 @@
+BEGIN_DECLARE_UNIFORMS()
+    //VAR_UNIFORM(float3, cameraPosWorld)
+    //VAR_UNIFORM(float4x4, matViewProjPrev)
+    //VAR_UNIFORM(float3, jitterWorld)
+
+    VAR_UNIFORM(sampler, mapDepth)
+    VAR_UNIFORM(sampler, mapTargetFull)
+    VAR_UNIFORM(sampler, mapLum1)
+    VAR_UNIFORM(sampler, mapTargetQuarter)
+
+    VAR_UNIFORM(float, zFar)
+    VAR_UNIFORM(float, gammaValue)
+
+    VAR_UNIFORM(float4, HDRParams0)
+    VAR_UNIFORM(float4, HDRParams1)
+    VAR_UNIFORM(float4, HDRParams5)
+    VAR_UNIFORM(float4, HDRParams8)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+    VAR_IN(float3, vCamVec, TEXCOORD1)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+//#define USING_FUNC_GETPOSWORLD
+//#include<deferUtil>
+
+// RangeReducedAdaptedLum
+float eyeAdaption( float fSceneLuminance )
+{
+    // good values: r_hdreyeadaptationbase=0.25, r_hdreyeadaptationfactor=0.5
+    float ret = lerp(HDRParams1.x, fSceneLuminance, HDRParams0.x);
+	return ret;
+}
+
+float4 filmicMapping( in float2 vTex, in float4 cScene, in float4 cBloom, 
+    in float fAdaptedLum, in float fVignetting )
+{
+	const float sceneKey = 0.18;
+	const float toe = 0.0;//0.004;
+	const float whitepoint = HDRParams8.w; //4.0;
+
+	fAdaptedLum = eyeAdaption( fAdaptedLum );
+	
+	// Exposure compensation -/+1.5 f-stops
+	float exposure = clamp(sceneKey / fAdaptedLum, 0.36, 2.8);
+  
+	float3 cColor = fVignetting * (exposure * cScene.xyz + cBloom.rgb * 0.5);
+
+    // Film response curve - todo: back parameters cpu side, when everyone fine with final curve setup
+    float4 x = float4(max(cColor.rgb + toe, 0), whitepoint);
+    float4 compressedCol = (x * (HDRParams8.x * 6.2 * x + HDRParams8.y * 0.5)) / (x * (HDRParams8.x * 6.2 * x + 1.7) + HDRParams8.z * 0.06);
+    cScene.xyz = compressedCol.xyz / compressedCol.w;
+	
+#ifdef EN_BIT0
+    cScene.xyz = pow( max(cScene.xyz, 0.0), gammaValue );
+#endif
+
+    return cScene;
+}
+
+float4 hdrToneMapSample( in float2 vTex, in float4 vSample, in float4 cBloom, 
+    in float fAdaptedLum, in float fVignetting, in float fDepth )
+{
+	{		 
+		// dx9/consoles always use fast rendering path
+
+		// Use hi res depth for blending far dof (avoid leaking)
+		//float fFocusRangeFar = saturate(fDepth * HDRDofParams.x + HDRDofParams.y);	
+        //float fFocusRangeFar = 0.0; // 暂时0，不处理焦距
+
+		// if half res mode
+		//float4 vSampleScaled = tex2D(sceneScaledMap0, vTex);
+        //float4 vSampleScaled = 0.0; // 暂时0，关闭和dof相关的
+
+		//vSample = lerp( vSample, vSampleScaled, saturate((fFocusRangeFar + vSampleScaled.a)));
+	}
+
+    vSample = filmicMapping(vTex, vSample, cBloom, fAdaptedLum, fVignetting);
+    return vSample;
+}
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+	// Store coarse depth for further post processes (MB/DOF) - todo: compute on cpu range scale
+	//float fLinearDepth = tex2D(mapDepth, pIn.vTex).r;
+	//float fDepth = fLinearDepth * zFar;
+    float fDepth = 0; // 暂时不用
+
+    // 光衰减值
+    // float fVignetting = tex2D(vignettingMap, IN.baseTC.xy);
+    float fVignetting = 1.0; // 暂时1，不衰减
+
+    // bloom
+    float4 cBloom = decodeRGBK( tex2D(mapTargetQuarter, pIn.vTex), SCENE_HDR_MULTIPLIER , true);
+    cBloom *= HDRParams5 * 3.0 / 8.0;	
+    //float4 cBloom = 0.0; // 暂时0，不处理bloom
+
+    // 当前调节后的亮度
+    float fAdaptedLum = tex2D(mapLum1, float2(0.5,0.5)).r;
+
+    // 原始图的采样
+	float4 vSample = tex2D(mapTargetFull, pIn.vTex); 
+	float4 toneMapedClr = hdrToneMapSample( pIn.vTex, vSample, cBloom, fAdaptedLum, fVignetting, fDepth );
+
+	// sun shaft合成
+	//toneMapedClr += tex2D(sunshaftsMap, IN.baseTC.xy) * SunShafts_SunCol * (1 - toneMapedClr);
+
+	// Apply color chart( disable for nightvision )
+	//texColorChart2D(colorChartMap, toneMapedClr);
+
+    pOut.k_color.rgb = toneMapedClr.rgb;
+
+    // motion for aa
+#if defined(EN_BIT1)
+    //float4 cObjVelocityParams = tex2D(normalsMap,IN.baseTC.xy) ;
+	//float2 vObjVelocity = DecodeMotionVector( cObjVelocityParams );
+
+    // 该点的实际位置在前一帧的uv
+	float3 B_posWS = getFastPosWorld(pIn.vTex, pIn.vCamVec-jitterWorld);
+	float4 B_prevHSPos = MUL( matViewProjPrev, float4(B_posWS, 1.0) ); 
+	B_prevHSPos /= B_prevHSPos.w;
+	
+    // 前一帧和当前帧的uv差
+	float2 tcOffsetPrev = pIn.vTex - (B_prevHSPos.xy /*+ jitterUV*/); 	
+	//tcOffsetPrev = lerp(tcOffsetPrev, vObjVelocity, cObjVelocityParams.w);
+
+    #if 0
+    float k = 0.000001;
+    if ( abs(tcOffsetPrev.x) > k || abs(tcOffsetPrev.y) > k )
+        pOut.k_color.rgb = float3(1,0,0);
+    else
+        pOut.k_color.rgb = float3(0,1,0);
+    #endif
+
+    // Compress the velocity for storing it in a 8-bit render target:
+	pOut.k_color.a = sqrt(5.0 * length(tcOffsetPrev));
+#else
+    pOut.k_color.a = 0.0;
+#endif
+
+#ifdef EN_BIT2
+    pOut.k_color.a = gammaCorrectAlpha( toLumin2( pOut.k_color.rgb ) ); // fxaa要求gamma space下的luma
+#endif
+
+END_MAIN_FUNCTION()
+

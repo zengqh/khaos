@@ -1,0 +1,43 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapInput)
+    VAR_UNIFORM(float4, psWeights, 8)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float4, vTex0, TEXCOORD0)
+    VAR_IN(float4, vTex1, TEXCOORD1)
+    VAR_IN(float4, vTex2, TEXCOORD2)
+    VAR_IN(float4, vTex3, TEXCOORD3)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    float4 sum = 0.0;
+
+    // vanila gaussian blur
+
+    sum = tex2D(mapInput, pIn.vTex0.xy) * psWeights[0].x + sum;
+    sum = tex2D(mapInput, pIn.vTex0.zw) * psWeights[1].x + sum;
+
+    sum = tex2D(mapInput, pIn.vTex1.xy) * psWeights[2].x + sum;
+    sum = tex2D(mapInput, pIn.vTex1.zw) * psWeights[3].x + sum;
+
+    sum = tex2D(mapInput, pIn.vTex2.xy) * psWeights[4].x + sum;
+    sum = tex2D(mapInput, pIn.vTex2.zw) * psWeights[5].x + sum;
+
+    sum = tex2D(mapInput, pIn.vTex3.xy) * psWeights[6].x + sum;
+    sum = tex2D(mapInput, pIn.vTex3.zw) * psWeights[7].x + sum;
+
+    pOut.k_color = sum;
+
+END_MAIN_FUNCTION()
+

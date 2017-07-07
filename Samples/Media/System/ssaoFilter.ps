@@ -1,0 +1,97 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(float4, cParams0)
+    VAR_UNIFORM(float4, cParams1)
+    VAR_UNIFORM(sampler, mapDepth)
+    VAR_UNIFORM(sampler, mapInput)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float4, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    float SSAO_GetAO( float2 uv )
+    {
+	    return tex2D(mapInput, uv).x;
+    }
+
+    float SSAO_GetDepth( float2 uv )
+    {
+        return tex2D(mapDepth, uv).x;
+    }
+
+    float GetLinearDepth( sampler2D depthSampler, float2 uv )
+    {
+        return tex2D(depthSampler, uv).r;
+    }
+
+    #define BlurOffset      cParams0
+    #define SSAO_BlurKernel cParams1
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    // In order to get 4 bilinear-filtered samples(16 samples effectively)
+    // Horizontal:
+    // +-+-+-+-+-+-+-+-+
+    // +-2-+-0-+-1-+-3-+
+    // +-+-+-+-+-+-+-+-+
+    // Vertical:
+    // +-+-+
+    // +-2-+
+    // +-+-+
+    // +-0-+
+    // +-+-+
+    // +-1-+
+    // +-+-+
+    // +-3-+
+    // +-+-+
+    // For the result to be smooth, this blur kernel size should be a multiple
+    // of SSAO dithering kernel, which happens to be 4x4.
+    // This is the reason that I do 4 samples here instead of 3 symmetric samples, for instance.
+    // Also, top-left biasing(X-0-X-X) is better than bottom-right biasing(X-X-0-X)
+    // in the way that it can better avoid light bleeding at the contact.
+
+	float4 depth4, value4;
+
+	float2 addr0 = floor(pIn.vTex.zw) * BlurOffset.zw;
+	float2 addr1 = addr0 + SSAO_BlurKernel.xy;
+	float2 addr2 = addr0 - SSAO_BlurKernel.xy;
+	float2 addr3 = addr1 + SSAO_BlurKernel.xy;
+
+	// Sample AO values
+	value4.x = SSAO_GetAO( addr0 );
+	value4.y = SSAO_GetAO( addr1 );
+	value4.z = SSAO_GetAO( addr2 );
+	value4.w = SSAO_GetAO( addr3 );
+
+	// Sample depth values
+	depth4.x = SSAO_GetDepth( addr0 );
+	depth4.y = SSAO_GetDepth( addr1 );
+	depth4.z = SSAO_GetDepth( addr2 );
+	depth4.w = SSAO_GetDepth( addr3 );
+
+	float centerDepth = GetLinearDepth( mapDepth, pIn.vTex.xy );
+	float4 weight4 = saturate(1.0 - SSAO_BlurKernel.w * abs(depth4 / centerDepth - 1.0));
+
+	// Compute bilateral weights
+	float totalWeight = dot(weight4, 1);
+
+	if ( totalWeight > 0.01 )
+	{
+		float totalValue = dot(weight4, value4);
+		pOut.k_color = saturate(totalValue / totalWeight);
+	}
+	else
+	{
+		pOut.k_color = dot(1, value4) * 0.25;
+	}
+
+END_MAIN_FUNCTION()
+

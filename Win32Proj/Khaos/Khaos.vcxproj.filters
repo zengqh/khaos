@@ -1,0 +1,1115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="1_Core">
+      <UniqueIdentifier>{c4c3ed05-13e4-4550-8b25-b6ea26f4d3b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\Memory">
+      <UniqueIdentifier>{b2e255a9-13ae-4697-922c-fb7706c20449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\Debug">
+      <UniqueIdentifier>{7444014a-69fa-4716-9653-375fdaaaffa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\PlatformStd">
+      <UniqueIdentifier>{8349f036-e553-4dbe-853c-d09ff11df7b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\Generic">
+      <UniqueIdentifier>{e35ebf69-9f6b-4e46-b649-122228857ee6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\System">
+      <UniqueIdentifier>{93b5c4f7-a9c6-4542-a50d-b9f110f4ee14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\Misc">
+      <UniqueIdentifier>{b8d04aaa-7411-4f00-82de-5245d32ac631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2_Math">
+      <UniqueIdentifier>{a5813042-e618-4faa-a355-b36837d6acb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="3_RenderDevice">
+      <UniqueIdentifier>{5050947d-121c-42a2-b003-a71c0f77fc1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic">
+      <UniqueIdentifier>{89680b14-f8bd-40dd-889c-34277a0c67ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem">
+      <UniqueIdentifier>{e1d9fcad-b8ad-4e5f-9efe-56851c4eb656}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph">
+      <UniqueIdentifier>{33a0a0be-ec6d-4ad3-8db3-8601504bb76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media">
+      <UniqueIdentifier>{7353aa7b-40ef-4e45-a279-71a7fc1f1980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System">
+      <UniqueIdentifier>{119775cf-084f-4307-955b-373f9061aeb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="5_Global">
+      <UniqueIdentifier>{f71537ea-1abd-4539-864c-6f48bb0803f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Unused">
+      <UniqueIdentifier>{5b92e868-b40e-4e96-9a7c-0cd063c72e8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1_Core\XML">
+      <UniqueIdentifier>{34352fcb-450b-42ae-a834-f6f17548a121}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem\Effect">
+      <UniqueIdentifier>{17fc16e9-65f9-4493-bf97-a981e97f478e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem\RenderSys">
+      <UniqueIdentifier>{aec3ef92-c616-4cbe-ae2c-78286926d141}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem\Render">
+      <UniqueIdentifier>{c2d89e97-bd59-4d84-8167-57ba162e8cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem\ImageProcess">
+      <UniqueIdentifier>{7978fb60-6709-4d24-802f-456adfe39374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem\RTT">
+      <UniqueIdentifier>{7903bc5f-0338-4c4b-8404-1b0043a7c874}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\RenderSystem\GI">
+      <UniqueIdentifier>{8f90e706-e727-468d-a666-5f3e9efffbf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\hdr">
+      <UniqueIdentifier>{967a30eb-aeeb-412c-910e-7714b6735489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\ssao">
+      <UniqueIdentifier>{db30c542-41ff-42b7-b68f-e144d9e6f2e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\comm">
+      <UniqueIdentifier>{7204e71d-16a2-44c3-970a-d0767accef84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\shadow">
+      <UniqueIdentifier>{f6d0bec2-400b-499e-9f41-91b8229a81c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\defer">
+      <UniqueIdentifier>{06c45bb0-ca2e-4dcd-afb6-d267ff943904}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\forward">
+      <UniqueIdentifier>{791fc26c-b48b-4d54-ae7a-6b6670f7fd32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\postAA">
+      <UniqueIdentifier>{4ccf475a-cd61-4a36-bc53-d95125927abe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Camera">
+      <UniqueIdentifier>{a963bc15-d1fe-4651-b296-690a525a2f15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Light">
+      <UniqueIdentifier>{2b6e05cc-fbab-4b03-bff0-4d0dcf755b93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Material">
+      <UniqueIdentifier>{96a4c9ec-b800-43a8-9cd1-8239915593f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Mesh">
+      <UniqueIdentifier>{221afe21-9dd5-4578-a203-10bc0e0ac04b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Area">
+      <UniqueIdentifier>{2fbc3c62-d0fb-41cd-a2e4-42f4239e065d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\SkyEnv">
+      <UniqueIdentifier>{63965448-97f6-4f90-acd2-d1a4f2331436}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\BaseNode">
+      <UniqueIdentifier>{2e840ef0-3cc7-41eb-8f10-cb3414dda0df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\ResourceManager">
+      <UniqueIdentifier>{d53c5919-d8b8-499c-b8bd-4a5ce5428ea9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Persistence">
+      <UniqueIdentifier>{288786ba-a372-4e8a-9e38-8fd0e0ab88b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="4_Graphic\SceneGraph\Graph">
+      <UniqueIdentifier>{7d3c0fa2-69c9-420a-ba91-be84e0637834}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="0_Media\System\sky">
+      <UniqueIdentifier>{94cf9433-874f-409c-81a6-94cd9c24317b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Include\KhaosMath.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPreHeaders.h">
+      <Filter>1_Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVector2.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVector3.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosQuaternion.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMatrix3.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMatrix4.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVector4.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPlane.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosAxisAlignedBox.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSphere.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPlaneBoundedVolume.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRay.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMaterial.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMaterialManager.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosColor.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPortal.h">
+      <Filter>0_Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPortalManager.h">
+      <Filter>0_Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPortalNode.h">
+      <Filter>0_Unused</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderDevice.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosD3D9RenderImpl.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosShader.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVertexIndexBuffer.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVertexDef.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosObjectAlignedBox.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosDefaultAlloc.h">
+      <Filter>1_Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMemory.h">
+      <Filter>1_Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosScopedPtr.h">
+      <Filter>1_Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSharedPtr.h">
+      <Filter>1_Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosResPtr.h">
+      <Filter>1_Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosStdAlloc.h">
+      <Filter>1_Core\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosThread.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosLogger.h">
+      <Filter>1_Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPlatform.h">
+      <Filter>1_Core\PlatformStd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosStdTypes.h">
+      <Filter>1_Core\PlatformStd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosConfig.h">
+      <Filter>1_Core\PlatformStd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosStdHeaders.h">
+      <Filter>1_Core\PlatformStd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosStringUtil.h">
+      <Filter>1_Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosUtil.h">
+      <Filter>1_Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosOSHeaders.h">
+      <Filter>1_Core\PlatformStd</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosBitSet.h">
+      <Filter>1_Core\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosIterator.h">
+      <Filter>1_Core\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosObjectRecycle.h">
+      <Filter>1_Core\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTimer.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTypes.h">
+      <Filter>1_Core\Generic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosDebug.h">
+      <Filter>1_Core\Debug</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRTTI.h">
+      <Filter>1_Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosAutoNameManager.h">
+      <Filter>1_Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosNoncopyable.h">
+      <Filter>1_Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosBinStream.h">
+      <Filter>1_Core\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderDeviceDef.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMaterialManualCreator.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMesh.h">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMeshManager.h">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMeshManualCreator.h">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMtrAttrib.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosFileSystem.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMsgQueue.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMsgQueueIds.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTexture.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTextureManager.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTextureObj.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTextureManualCreator.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSurfaceObj.h">
+      <Filter>3_RenderDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRoot.h">
+      <Filter>5_Global</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosNameDef.h">
+      <Filter>5_Global</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Dependencies\tinyxml\tinyxml.h">
+      <Filter>1_Core\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Dependencies\tinyxml\tinystr.h">
+      <Filter>1_Core\XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosTexCfgParser.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosCamera.h">
+      <Filter>4_Graphic\SceneGraph\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosFrustum.h">
+      <Filter>4_Graphic\SceneGraph\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosLight.h">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosShadow.h">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMeshFile.h">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMaterialFile.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSampleUtil.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSHUtil.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosEffectBuildStrategy.h">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosEffectContext.h">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosEffectID.h">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosEffectSetters.h">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderSystem.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosLightRender.h">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosGeneralRender.h">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderBase.h">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderable.h">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosImageProcess.h">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosViewport.h">
+      <Filter>4_Graphic\RenderSystem\RTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderTarget.h">
+      <Filter>4_Graphic\RenderSystem\RTT</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosUniformPacker.h">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosGI.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosPRT.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderBufferPool.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderFeature.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderSetting.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMeshUtil.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosLightMapUtil.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosBakeUtil.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosAOBake.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosIrrBake.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosFilePack.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosFileIterator.h">
+      <Filter>1_Core\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosImageProcessUtil.h">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosImageProcessHDR.h">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosImageProcessShadow.h">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRIDMgr.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosImageProcessAA.h">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRSM.h">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosLightMgr.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosDeferredRendering.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosEnvLitBuilder.h">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMaterialDef.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosGBuffer.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosImageProcessComposite.h">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosCameraNode.h">
+      <Filter>4_Graphic\SceneGraph\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosLightNode.h">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosMeshNode.h">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosResource.h">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosResourceManager.h">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosResourceMQIds.h">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosAreaOctree.h">
+      <Filter>4_Graphic\SceneGraph\Area</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosAreaNode.h">
+      <Filter>4_Graphic\SceneGraph\Area</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosNode.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosNodeDef.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosNodeFactory.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSceneObject.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSceneNode.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosOctree.h">
+      <Filter>4_Graphic\SceneGraph\Area</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSkyEnv.h">
+      <Filter>4_Graphic\SceneGraph\SkyEnv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosEnvProbeNode.h">
+      <Filter>4_Graphic\SceneGraph\SkyEnv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSysResManager.h">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosObjImport.h">
+      <Filter>4_Graphic\SceneGraph\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSceneFile.h">
+      <Filter>4_Graphic\SceneGraph\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosStrConv.h">
+      <Filter>4_Graphic\SceneGraph\Persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRayQuery.h">
+      <Filter>4_Graphic\SceneGraph\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSceneGraph.h">
+      <Filter>4_Graphic\SceneGraph\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosGlossyTool.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRSCmd.h">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosBRDF.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosInstObjSharedData.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRenderableSharedData.h">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosRect.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSkyRender.h">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVolumeProbeNode.h">
+      <Filter>4_Graphic\SceneGraph\SkyEnv</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosVolumeProbeRender.h">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosAABBBVH.h">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSceneBVH.h">
+      <Filter>4_Graphic\SceneGraph\Graph</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosSSE.h">
+      <Filter>2_Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Include\KhaosDist2Alpha.h">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Src\KhaosMath.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPreHeaders.cpp">
+      <Filter>1_Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosVector2.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosVector3.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosQuaternion.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMatrix3.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMatrix4.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosVector4.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPlane.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosAxisAlignedBox.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMaterial.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMaterialManager.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosColor.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPortal.cpp">
+      <Filter>0_Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPortalManager.cpp">
+      <Filter>0_Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPortalNode.cpp">
+      <Filter>0_Unused</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderDevice.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosD3D9RenderImpl.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosShader.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosVertexIndexBuffer.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosDefaultAlloc.cpp">
+      <Filter>1_Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMemory.cpp">
+      <Filter>1_Core\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosThread.cpp">
+      <Filter>1_Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLogger.cpp">
+      <Filter>1_Core\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosStringUtil.cpp">
+      <Filter>1_Core\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosUtil.cpp">
+      <Filter>1_Core\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosTimer.cpp">
+      <Filter>1_Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosDebug.cpp">
+      <Filter>1_Core\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMesh.cpp">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMeshManager.cpp">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMtrAttrib.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosFileSystem.cpp">
+      <Filter>1_Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMsgQueue.cpp">
+      <Filter>1_Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosTexture.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosTextureManager.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosTextureObj.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSurfaceObj.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRoot.cpp">
+      <Filter>5_Global</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosNameDef.cpp">
+      <Filter>5_Global</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinyxml.cpp">
+      <Filter>1_Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinyxmlerror.cpp">
+      <Filter>1_Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinyxmlparser.cpp">
+      <Filter>1_Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinystr.cpp">
+      <Filter>1_Core\XML</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosTexCfgParser.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderDeviceDef.cpp">
+      <Filter>3_RenderDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosCamera.cpp">
+      <Filter>4_Graphic\SceneGraph\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosFrustum.cpp">
+      <Filter>4_Graphic\SceneGraph\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLight.cpp">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosShadow.cpp">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMeshFile.cpp">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMaterialFile.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSampleUtil.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSHUtil.cpp">
+      <Filter>2_Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosEffectBuildStrategy.cpp">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosEffectContext.cpp">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosEffectSetters.cpp">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSystem.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_Deferred.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_EnvProbe.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_MainResults.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_PostEff.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_ShadowMap.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLightRender.cpp">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosGeneralRender.cpp">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderBase.cpp">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderable.cpp">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosImageProcess.cpp">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosViewport.cpp">
+      <Filter>4_Graphic\RenderSystem\RTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderTarget.cpp">
+      <Filter>4_Graphic\RenderSystem\RTT</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosGI.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPRT.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderBufferPool.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRenderSetting.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMeshUtil.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLightMapUtil.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosBakeUtil.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosAOBake.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosIrrBake.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosFilePack.cpp">
+      <Filter>1_Core\System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosImageProcessUtil.cpp">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosImageProcessHDR.cpp">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosImageProcessShadow.cpp">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRIDMgr.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosImageProcessAA.cpp">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRSM.cpp">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLightMgr.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosDeferredRendering.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosEnvLitBuilder.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosEffectSetters_deprecated.cpp">
+      <Filter>4_Graphic\RenderSystem\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosGBuffer.cpp">
+      <Filter>4_Graphic\RenderSystem\RenderSys</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosImageProcessComposite.cpp">
+      <Filter>4_Graphic\RenderSystem\ImageProcess</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosCameraNode.cpp">
+      <Filter>4_Graphic\SceneGraph\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLightNode.cpp">
+      <Filter>4_Graphic\SceneGraph\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosMeshNode.cpp">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosResource.cpp">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosResourceManager.cpp">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosAreaOctree.cpp">
+      <Filter>4_Graphic\SceneGraph\Area</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosAreaNode.cpp">
+      <Filter>4_Graphic\SceneGraph\Area</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosNode.cpp">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosNodeFactory.cpp">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSceneNode.cpp">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosOctree.cpp">
+      <Filter>4_Graphic\SceneGraph\Area</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSkyEnv.cpp">
+      <Filter>4_Graphic\SceneGraph\SkyEnv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosEnvProbeNode.cpp">
+      <Filter>4_Graphic\SceneGraph\SkyEnv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSysResManager.cpp">
+      <Filter>4_Graphic\SceneGraph\ResourceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosObjImport.cpp">
+      <Filter>4_Graphic\SceneGraph\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSceneFile.cpp">
+      <Filter>4_Graphic\SceneGraph\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosStrConv.cpp">
+      <Filter>4_Graphic\SceneGraph\Persistence</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosRayQuery.cpp">
+      <Filter>4_Graphic\SceneGraph\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSceneGraph.cpp">
+      <Filter>4_Graphic\SceneGraph\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosGlossyTool.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosInstObjSharedData.cpp">
+      <Filter>4_Graphic\SceneGraph\BaseNode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSkyRender.cpp">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosVolumeProbeNode.cpp">
+      <Filter>4_Graphic\SceneGraph\SkyEnv</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLightMapUtil_File.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosLightMapUtil_Filter.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosIrrBake_VP.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosIrrBake_Maps.cpp">
+      <Filter>4_Graphic\RenderSystem\GI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosVolumeProbeRender.cpp">
+      <Filter>4_Graphic\RenderSystem\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosAABBBVH.cpp">
+      <Filter>4_Graphic\SceneGraph\Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosSceneBVH.cpp">
+      <Filter>4_Graphic\SceneGraph\Graph</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosDist2Alpha.cpp">
+      <Filter>4_Graphic\SceneGraph\Material</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Samples\Media\System\hdrAdaptedLum.ps">
+      <Filter>0_Media\System\hdr</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\hdrInitLumin.ps">
+      <Filter>0_Media\System\hdr</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\hdrLumIterative.ps">
+      <Filter>0_Media\System\hdr</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\hdrFinalScene.ps">
+      <Filter>0_Media\System\hdr</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\ssao.ps">
+      <Filter>0_Media\System\ssao</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\ssao.vs">
+      <Filter>0_Media\System\ssao</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\ssaoFilter.ps">
+      <Filter>0_Media\System\ssao</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\ssaoFilter.vs">
+      <Filter>0_Media\System\ssao</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\comm.sl">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commBlur.ps">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commBlur.vs">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commScale.ps">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commScale.vs">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\hdrBrightPass.ps">
+      <Filter>0_Media\System\hdr</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\hdrFlaresPass.ps">
+      <Filter>0_Media\System\hdr</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\shadowPre.vs">
+      <Filter>0_Media\System\shadow</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\shadowPre.ps">
+      <Filter>0_Media\System\shadow</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\deferPre.ps">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\deferPre.vs">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\litAcc.ps">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\litAcc.vs">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\shadowMask.ps">
+      <Filter>0_Media\System\shadow</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\shadowMask.vs">
+      <Filter>0_Media\System\shadow</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commDrawScreen.vs">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\shadowUtil.inc">
+      <Filter>0_Media\System\shadow</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\general.ps">
+      <Filter>0_Media\System\forward</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\general.vs">
+      <Filter>0_Media\System\forward</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\uirect.ps">
+      <Filter>0_Media\System\forward</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\uirect.vs">
+      <Filter>0_Media\System\forward</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\fragUtil.inc">
+      <Filter>0_Media\System\forward</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\deferUtil.inc">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\downscaleZ.ps">
+      <Filter>0_Media\System\ssao</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\downscaleZ.vs">
+      <Filter>0_Media\System\ssao</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\smaaUtil.inc">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AAEdgeDetection.ps">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AAEdgeDetection.vs">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AABlendingWeightsCalc.ps">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AABlendingWeightsCalc.vs">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AAFinal.ps">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AAFinal.vs">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AATemp.ps">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commDrawScreenWPOS.vs">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\pbrUtil.inc">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\materialUtil.inc">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\vtxUtil.inc">
+      <Filter>0_Media\System\forward</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\commCopy.ps">
+      <Filter>0_Media\System\comm</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\deferComposite.ps">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\deferComposite.vs">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\specularAA.ps">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\depthConvert.ps">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\skySimpleRender.ps">
+      <Filter>0_Media\System\sky</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\fxaaUtil.inc">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AAFinal2.ps">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\AAFinal2.vs">
+      <Filter>0_Media\System\postAA</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\volProbeAcc.ps">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+    <None Include="..\..\Samples\Media\System\volProbeAcc.vs">
+      <Filter>0_Media\System\defer</Filter>
+    </None>
+  </ItemGroup>
+</Project>

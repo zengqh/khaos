@@ -1,0 +1,46 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapColor)
+    VAR_UNIFORM(float2, invTargetSize)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    #define FXAA_PC 1
+    #define FXAA_HLSL_3 1
+    #define FXAA_QUALITY__PRESET 29
+    #include<fxaaUtil>
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    pOut.k_color = 
+    FxaaPixelShader(
+        pIn.vTex,							    // FxaaFloat2 pos,
+        float4(0.0f, 0.0f, 0.0f, 0.0f),		    // FxaaFloat4 fxaaConsolePosPos,
+        mapColor,							    // FxaaTex tex,
+        mapColor,							    // FxaaTex fxaaConsole360TexExpBiasNegOne,
+        mapColor,							    // FxaaTex fxaaConsole360TexExpBiasNegTwo,
+        invTargetSize,							// FxaaFloat2 fxaaQualityRcpFrame,
+        float4(0.0f, 0.0f, 0.0f, 0.0f),		    // FxaaFloat4 fxaaConsoleRcpFrameOpt,
+        float4(0.0f, 0.0f, 0.0f, 0.0f),		    // FxaaFloat4 fxaaConsoleRcpFrameOpt2,
+        float4(0.0f, 0.0f, 0.0f, 0.0f),		    // FxaaFloat4 fxaaConsole360RcpFrameOpt2,
+        0.75f,									// FxaaFloat fxaaQualitySubpix,
+        0.166f,									// FxaaFloat fxaaQualityEdgeThreshold,
+        0.0833f,								// FxaaFloat fxaaQualityEdgeThresholdMin,
+        0.0f,									// FxaaFloat fxaaConsoleEdgeSharpness,
+        0.0f,									// FxaaFloat fxaaConsoleEdgeThreshold,
+        0.0f,									// FxaaFloat fxaaConsoleEdgeThresholdMin,
+        float4(0.0f, 0.0f, 0.0f, 0.0f)		    // FxaaFloat fxaaConsole360ConstDir,
+    );
+
+END_MAIN_FUNCTION()
+

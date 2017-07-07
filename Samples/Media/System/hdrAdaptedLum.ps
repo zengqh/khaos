@@ -1,0 +1,34 @@
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapLum0)
+    VAR_UNIFORM(sampler, mapLum1)
+    VAR_UNIFORM(float4, offsetParams)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    float vAdaptedLum = tex2D(mapLum0, pIn.vTex).r;
+    float vCurrentLum = tex2D(mapLum1, pIn.vTex).r;
+
+    // Check for bad fp conditions
+    if ( vCurrentLum * offsetParams.w != 0.0 ) // w = 0，正常不会进入
+        vCurrentLum = 1.0;
+
+    if ( vAdaptedLum * offsetParams.w != 0.0 )
+        vAdaptedLum = 1.0;
+ 
+    float vNewAdaptation = max(0.0, vAdaptedLum + (vCurrentLum - vAdaptedLum) * offsetParams.y);
+    pOut.k_color = vNewAdaptation;
+
+END_MAIN_FUNCTION()
+

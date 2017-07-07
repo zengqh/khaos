@@ -1,0 +1,73 @@
+
+#define USE_LUM_AVG     0
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, TexOffsetParams)
+        VAR_UNIFORM(float4, g0)
+        VAR_UNIFORM(float4, g1)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM(sampler, mapInput)
+    VAR_UNIFORM(TexOffsetParams, offsetParams)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    float recipSampleCount = 0.25;
+    float lumInfoAvg = 0.0;
+
+    // ²ÉÑù4´Î
+    float3 cTex = tex2D(mapInput, pIn.vTex + offsetParams.g0.xy).rgb;
+	float  fLum = toLumin(cTex);
+
+#if USE_LUM_AVG
+	lumInfoAvg += fLum;
+#else
+	lumInfoAvg += log(fLum + 1e-6);
+#endif
+
+    cTex = tex2D(mapInput, pIn.vTex + offsetParams.g0.zw).rgb;
+	fLum = toLumin(cTex);
+	
+#if USE_LUM_AVG
+	lumInfoAvg += fLum;
+#else
+	lumInfoAvg += log(fLum + 1e-6);
+#endif
+
+    cTex = tex2D(mapInput, pIn.vTex + offsetParams.g1.xy).rgb;
+    fLum = toLumin(cTex);
+    
+#if USE_LUM_AVG
+	lumInfoAvg += fLum;
+#else
+	lumInfoAvg += log(fLum + 1e-6);
+#endif
+
+    cTex = tex2D(mapInput, pIn.vTex + offsetParams.g1.zw).rgb;
+	fLum = toLumin(cTex);
+
+#if USE_LUM_AVG
+	lumInfoAvg += fLum;
+#else
+	lumInfoAvg += log(fLum + 1e-6);
+#endif
+
+    // clamp to acceptable range
+    lumInfoAvg = min(lumInfoAvg * recipSampleCount, 64.0);
+
+    pOut.k_color = lumInfoAvg;
+
+END_MAIN_FUNCTION()
+

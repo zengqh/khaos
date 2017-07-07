@@ -1,0 +1,26 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapInput)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+    pOut.k_color = tex2D(mapInput, pIn.vTex);
+
+    #ifdef EN_BIT0
+        pOut.k_color.a = gammaCorrectAlpha( toLumin2( pOut.k_color.rgb ) ); // fxaa要求gamma space下的luma
+    #endif
+
+END_MAIN_FUNCTION()
+

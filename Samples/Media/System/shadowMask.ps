@@ -1,0 +1,69 @@
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, ShadowParams)
+        VAR_UNIFORM(float4, shadowInfo)
+        VAR_UNIFORM(float4, shadowFade)
+        VAR_UNIFORM(float4, splitZView)
+        VAR_UNIFORM(float4, alignOffsetA)
+        VAR_UNIFORM(float4, alignOffsetB)
+        VAR_UNIFORM(float4, clampRanges, 4)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM(float3, cameraPosWorld)
+    VAR_UNIFORM(float3, jitterWorld)
+
+    VAR_UNIFORM(float4x4, matShadowProj, 4)
+    VAR_UNIFORM(ShadowParams, shadParams)
+
+    VAR_UNIFORM(sampler, mapShadow0)
+    //VAR_UNIFORM(sampler, mapShadow1)
+    //VAR_UNIFORM(sampler, mapShadow2)
+    //VAR_UNIFORM(sampler, mapShadow3)
+
+    VAR_UNIFORM(sampler, mapDepth)
+    
+    VAR_UNIFORM(sampler, mapRandom)
+    VAR_UNIFORM(float4, poissonDisk, MAX_POISSON_DISK)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+    VAR_IN(float3, vCamVec, TEXCOORD1)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+    #define USING_FUNC_GETPOSWORLD
+    #include<deferUtil>
+
+    // deferred shadow config
+    #define SPLIT_FUNC  0
+
+    #if defined(EN_BIT1)
+        #define CASCADES_COUNT 4
+    #else
+        #define CASCADES_COUNT 3
+    #endif
+
+    #include<shadowUtil>
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+  
+    // ÏñËØposworld×ø±ê
+    float3 objPosWorld = getFastPosWorld(pIn.vTex, pIn.vCamVec
+#if defined(EN_BIT0) 
+    -jitterWorld
+#endif
+    );
+
+    // ¼ÆËãÒõÓ°
+    pOut.k_color = calcShadow(objPosWorld);
+    
+END_MAIN_FUNCTION()
+

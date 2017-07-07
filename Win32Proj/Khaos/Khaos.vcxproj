@@ -1,0 +1,437 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E8D786B6-B80F-425B-9661-9E0ED5BBE20C}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Core</RootNamespace>
+    <ProjectName>Khaos</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)_d</TargetName>
+    <OutDir>$(SolutionDir)..\Lib\</OutDir>
+    <IncludePath>$(SolutionDir)../Dependencies/OpenNL/src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)..\Lib\</OutDir>
+    <IncludePath>$(SolutionDir)../Dependencies/OpenNL/src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Include\;$(SolutionDir)..\Dependencies\</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>KhaosPreHeaders.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\Include\;$(SolutionDir)..\Dependencies\</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>KhaosPreHeaders.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Dependencies\tinyxml\tinystr.h" />
+    <ClInclude Include="..\..\Dependencies\tinyxml\tinyxml.h" />
+    <ClInclude Include="..\..\Include\KhaosAABBBVH.h" />
+    <ClInclude Include="..\..\Include\KhaosAOBake.h" />
+    <ClInclude Include="..\..\Include\KhaosAreaNode.h" />
+    <ClInclude Include="..\..\Include\KhaosAreaOctree.h" />
+    <ClInclude Include="..\..\Include\KhaosAutoNameManager.h" />
+    <ClInclude Include="..\..\Include\KhaosAxisAlignedBox.h" />
+    <ClInclude Include="..\..\Include\KhaosBakeUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosBinStream.h" />
+    <ClInclude Include="..\..\Include\KhaosBitSet.h" />
+    <ClInclude Include="..\..\Include\KhaosBRDF.h" />
+    <ClInclude Include="..\..\Include\KhaosCamera.h" />
+    <ClInclude Include="..\..\Include\KhaosCameraNode.h" />
+    <ClInclude Include="..\..\Include\KhaosColor.h" />
+    <ClInclude Include="..\..\Include\KhaosConfig.h" />
+    <ClInclude Include="..\..\Include\KhaosD3D9RenderImpl.h" />
+    <ClInclude Include="..\..\Include\KhaosDebug.h" />
+    <ClInclude Include="..\..\Include\KhaosDefaultAlloc.h" />
+    <ClInclude Include="..\..\Include\KhaosDeferredRendering.h" />
+    <ClInclude Include="..\..\Include\KhaosDist2Alpha.h" />
+    <ClInclude Include="..\..\Include\KhaosEffectBuildStrategy.h" />
+    <ClInclude Include="..\..\Include\KhaosEffectContext.h" />
+    <ClInclude Include="..\..\Include\KhaosEffectID.h" />
+    <ClInclude Include="..\..\Include\KhaosEffectSetters.h" />
+    <ClInclude Include="..\..\Include\KhaosEnvLitBuilder.h" />
+    <ClInclude Include="..\..\Include\KhaosEnvProbeNode.h" />
+    <ClInclude Include="..\..\Include\KhaosFileIterator.h" />
+    <ClInclude Include="..\..\Include\KhaosFilePack.h" />
+    <ClInclude Include="..\..\Include\KhaosFileSystem.h" />
+    <ClInclude Include="..\..\Include\KhaosFrustum.h" />
+    <ClInclude Include="..\..\Include\KhaosGBuffer.h" />
+    <ClInclude Include="..\..\Include\KhaosGeneralRender.h" />
+    <ClInclude Include="..\..\Include\KhaosGI.h" />
+    <ClInclude Include="..\..\Include\KhaosGlossyTool.h" />
+    <ClInclude Include="..\..\Include\KhaosImageProcess.h" />
+    <ClInclude Include="..\..\Include\KhaosImageProcessAA.h" />
+    <ClInclude Include="..\..\Include\KhaosImageProcessComposite.h" />
+    <ClInclude Include="..\..\Include\KhaosImageProcessHDR.h" />
+    <ClInclude Include="..\..\Include\KhaosImageProcessShadow.h" />
+    <ClInclude Include="..\..\Include\KhaosImageProcessUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosInstObjSharedData.h" />
+    <ClInclude Include="..\..\Include\KhaosIrrBake.h" />
+    <ClInclude Include="..\..\Include\KhaosIterator.h" />
+    <ClInclude Include="..\..\Include\KhaosLight.h" />
+    <ClInclude Include="..\..\Include\KhaosLightMapUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosLightMgr.h" />
+    <ClInclude Include="..\..\Include\KhaosLightNode.h" />
+    <ClInclude Include="..\..\Include\KhaosLightRender.h" />
+    <ClInclude Include="..\..\Include\KhaosLogger.h" />
+    <ClInclude Include="..\..\Include\KhaosMaterial.h" />
+    <ClInclude Include="..\..\Include\KhaosMaterialDef.h" />
+    <ClInclude Include="..\..\Include\KhaosMaterialFile.h" />
+    <ClInclude Include="..\..\Include\KhaosMaterialManager.h" />
+    <ClInclude Include="..\..\Include\KhaosMaterialManualCreator.h" />
+    <ClInclude Include="..\..\Include\KhaosMath.h" />
+    <ClInclude Include="..\..\Include\KhaosMatrix3.h" />
+    <ClInclude Include="..\..\Include\KhaosMatrix4.h" />
+    <ClInclude Include="..\..\Include\KhaosMemory.h" />
+    <ClInclude Include="..\..\Include\KhaosMesh.h" />
+    <ClInclude Include="..\..\Include\KhaosMeshFile.h" />
+    <ClInclude Include="..\..\Include\KhaosMeshManager.h" />
+    <ClInclude Include="..\..\Include\KhaosMeshManualCreator.h" />
+    <ClInclude Include="..\..\Include\KhaosMeshNode.h" />
+    <ClInclude Include="..\..\Include\KhaosMeshUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosMsgQueue.h" />
+    <ClInclude Include="..\..\Include\KhaosMsgQueueIds.h" />
+    <ClInclude Include="..\..\Include\KhaosMtrAttrib.h" />
+    <ClInclude Include="..\..\Include\KhaosNameDef.h" />
+    <ClInclude Include="..\..\Include\KhaosNode.h" />
+    <ClInclude Include="..\..\Include\KhaosNodeDef.h" />
+    <ClInclude Include="..\..\Include\KhaosNodeFactory.h" />
+    <ClInclude Include="..\..\Include\KhaosNoncopyable.h" />
+    <ClInclude Include="..\..\Include\KhaosObjectAlignedBox.h" />
+    <ClInclude Include="..\..\Include\KhaosObjectRecycle.h" />
+    <ClInclude Include="..\..\Include\KhaosObjImport.h" />
+    <ClInclude Include="..\..\Include\KhaosOctree.h" />
+    <ClInclude Include="..\..\Include\KhaosOSHeaders.h" />
+    <ClInclude Include="..\..\Include\KhaosPlane.h" />
+    <ClInclude Include="..\..\Include\KhaosPlaneBoundedVolume.h" />
+    <ClInclude Include="..\..\Include\KhaosPlatform.h" />
+    <ClInclude Include="..\..\Include\KhaosPortal.h" />
+    <ClInclude Include="..\..\Include\KhaosPortalManager.h" />
+    <ClInclude Include="..\..\Include\KhaosPortalNode.h" />
+    <ClInclude Include="..\..\Include\KhaosPreHeaders.h" />
+    <ClInclude Include="..\..\Include\KhaosPRT.h" />
+    <ClInclude Include="..\..\Include\KhaosQuaternion.h" />
+    <ClInclude Include="..\..\Include\KhaosRay.h" />
+    <ClInclude Include="..\..\Include\KhaosRayQuery.h" />
+    <ClInclude Include="..\..\Include\KhaosRect.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderable.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderableSharedData.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderBase.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderBufferPool.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderDevice.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderDeviceDef.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderFeature.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderSetting.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderSystem.h" />
+    <ClInclude Include="..\..\Include\KhaosRenderTarget.h" />
+    <ClInclude Include="..\..\Include\KhaosResource.h" />
+    <ClInclude Include="..\..\Include\KhaosResourceManager.h" />
+    <ClInclude Include="..\..\Include\KhaosResourceMQIds.h" />
+    <ClInclude Include="..\..\Include\KhaosResPtr.h" />
+    <ClInclude Include="..\..\Include\KhaosRIDMgr.h" />
+    <ClInclude Include="..\..\Include\KhaosRoot.h" />
+    <ClInclude Include="..\..\Include\KhaosRSCmd.h" />
+    <ClInclude Include="..\..\Include\KhaosRSM.h" />
+    <ClInclude Include="..\..\Include\KhaosRTTI.h" />
+    <ClInclude Include="..\..\Include\KhaosSampleUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosSceneBVH.h" />
+    <ClInclude Include="..\..\Include\KhaosSceneFile.h" />
+    <ClInclude Include="..\..\Include\KhaosSceneGraph.h" />
+    <ClInclude Include="..\..\Include\KhaosSceneNode.h" />
+    <ClInclude Include="..\..\Include\KhaosSceneObject.h" />
+    <ClInclude Include="..\..\Include\KhaosScopedPtr.h" />
+    <ClInclude Include="..\..\Include\KhaosShader.h" />
+    <ClInclude Include="..\..\Include\KhaosShadow.h" />
+    <ClInclude Include="..\..\Include\KhaosSharedPtr.h" />
+    <ClInclude Include="..\..\Include\KhaosSHUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosSkyEnv.h" />
+    <ClInclude Include="..\..\Include\KhaosSkyRender.h" />
+    <ClInclude Include="..\..\Include\KhaosSphere.h" />
+    <ClInclude Include="..\..\Include\KhaosSSE.h" />
+    <ClInclude Include="..\..\Include\KhaosStdAlloc.h" />
+    <ClInclude Include="..\..\Include\KhaosStdHeaders.h" />
+    <ClInclude Include="..\..\Include\KhaosStdTypes.h" />
+    <ClInclude Include="..\..\Include\KhaosStrConv.h" />
+    <ClInclude Include="..\..\Include\KhaosStringUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosSurfaceObj.h" />
+    <ClInclude Include="..\..\Include\KhaosSysResManager.h" />
+    <ClInclude Include="..\..\Include\KhaosTexCfgParser.h" />
+    <ClInclude Include="..\..\Include\KhaosTexture.h" />
+    <ClInclude Include="..\..\Include\KhaosTextureManager.h" />
+    <ClInclude Include="..\..\Include\KhaosTextureManualCreator.h" />
+    <ClInclude Include="..\..\Include\KhaosTextureObj.h" />
+    <ClInclude Include="..\..\Include\KhaosThread.h" />
+    <ClInclude Include="..\..\Include\KhaosTimer.h" />
+    <ClInclude Include="..\..\Include\KhaosTypes.h" />
+    <ClInclude Include="..\..\Include\KhaosUniformPacker.h" />
+    <ClInclude Include="..\..\Include\KhaosUtil.h" />
+    <ClInclude Include="..\..\Include\KhaosVector2.h" />
+    <ClInclude Include="..\..\Include\KhaosVector3.h" />
+    <ClInclude Include="..\..\Include\KhaosVector4.h" />
+    <ClInclude Include="..\..\Include\KhaosVertexDef.h" />
+    <ClInclude Include="..\..\Include\KhaosVertexIndexBuffer.h" />
+    <ClInclude Include="..\..\Include\KhaosViewport.h" />
+    <ClInclude Include="..\..\Include\KhaosVolumeProbeNode.h" />
+    <ClInclude Include="..\..\Include\KhaosVolumeProbeRender.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinystr.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinyxml.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinyxmlerror.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Dependencies\tinyxml\tinyxmlparser.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosAABBBVH.cpp" />
+    <ClCompile Include="..\..\Src\KhaosAOBake.cpp" />
+    <ClCompile Include="..\..\Src\KhaosAreaNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosAreaOctree.cpp" />
+    <ClCompile Include="..\..\Src\KhaosAxisAlignedBox.cpp" />
+    <ClCompile Include="..\..\Src\KhaosBakeUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosCamera.cpp" />
+    <ClCompile Include="..\..\Src\KhaosCameraNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosColor.cpp" />
+    <ClCompile Include="..\..\Src\KhaosD3D9RenderImpl.cpp" />
+    <ClCompile Include="..\..\Src\KhaosDebug.cpp" />
+    <ClCompile Include="..\..\Src\KhaosDefaultAlloc.cpp" />
+    <ClCompile Include="..\..\Src\KhaosDeferredRendering.cpp" />
+    <ClCompile Include="..\..\Src\KhaosDist2Alpha.cpp" />
+    <ClCompile Include="..\..\Src\KhaosEffectBuildStrategy.cpp" />
+    <ClCompile Include="..\..\Src\KhaosEffectContext.cpp" />
+    <ClCompile Include="..\..\Src\KhaosEffectSetters.cpp" />
+    <ClCompile Include="..\..\Src\KhaosEffectSetters_deprecated.cpp" />
+    <ClCompile Include="..\..\Src\KhaosEnvLitBuilder.cpp" />
+    <ClCompile Include="..\..\Src\KhaosEnvProbeNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosFilePack.cpp" />
+    <ClCompile Include="..\..\Src\KhaosFileSystem.cpp" />
+    <ClCompile Include="..\..\Src\KhaosFrustum.cpp" />
+    <ClCompile Include="..\..\Src\KhaosGBuffer.cpp" />
+    <ClCompile Include="..\..\Src\KhaosGeneralRender.cpp" />
+    <ClCompile Include="..\..\Src\KhaosGI.cpp" />
+    <ClCompile Include="..\..\Src\KhaosGlossyTool.cpp" />
+    <ClCompile Include="..\..\Src\KhaosImageProcess.cpp" />
+    <ClCompile Include="..\..\Src\KhaosImageProcessAA.cpp" />
+    <ClCompile Include="..\..\Src\KhaosImageProcessComposite.cpp" />
+    <ClCompile Include="..\..\Src\KhaosImageProcessHDR.cpp" />
+    <ClCompile Include="..\..\Src\KhaosImageProcessShadow.cpp" />
+    <ClCompile Include="..\..\Src\KhaosImageProcessUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosInstObjSharedData.cpp" />
+    <ClCompile Include="..\..\Src\KhaosIrrBake.cpp" />
+    <ClCompile Include="..\..\Src\KhaosIrrBake_Maps.cpp" />
+    <ClCompile Include="..\..\Src\KhaosIrrBake_VP.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLight.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLightMapUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLightMapUtil_File.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLightMapUtil_Filter.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLightMgr.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLightNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLightRender.cpp" />
+    <ClCompile Include="..\..\Src\KhaosLogger.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMaterial.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMaterialFile.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMaterialManager.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMath.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMatrix3.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMatrix4.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMemory.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMesh.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMeshFile.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMeshManager.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMeshNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMeshUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMsgQueue.cpp" />
+    <ClCompile Include="..\..\Src\KhaosMtrAttrib.cpp" />
+    <ClCompile Include="..\..\Src\KhaosNameDef.cpp" />
+    <ClCompile Include="..\..\Src\KhaosNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosNodeFactory.cpp" />
+    <ClCompile Include="..\..\Src\KhaosObjImport.cpp" />
+    <ClCompile Include="..\..\Src\KhaosOctree.cpp" />
+    <ClCompile Include="..\..\Src\KhaosPlane.cpp" />
+    <ClCompile Include="..\..\Src\KhaosPortal.cpp" />
+    <ClCompile Include="..\..\Src\KhaosPortalManager.cpp" />
+    <ClCompile Include="..\..\Src\KhaosPortalNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosPreHeaders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Src\KhaosPRT.cpp" />
+    <ClCompile Include="..\..\Src\KhaosQuaternion.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRayQuery.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderable.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderBase.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderBufferPool.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderDevice.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderDeviceDef.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSetting.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSystem.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_Deferred.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_EnvProbe.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_MainResults.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_PostEff.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderSystem_ShadowMap.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRenderTarget.cpp" />
+    <ClCompile Include="..\..\Src\KhaosResource.cpp" />
+    <ClCompile Include="..\..\Src\KhaosResourceManager.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRIDMgr.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRoot.cpp" />
+    <ClCompile Include="..\..\Src\KhaosRSM.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSampleUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSceneBVH.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSceneFile.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSceneGraph.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSceneNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosShader.cpp" />
+    <ClCompile Include="..\..\Src\KhaosShadow.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSHUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSkyEnv.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSkyRender.cpp" />
+    <ClCompile Include="..\..\Src\KhaosStrConv.cpp" />
+    <ClCompile Include="..\..\Src\KhaosStringUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSurfaceObj.cpp" />
+    <ClCompile Include="..\..\Src\KhaosSysResManager.cpp" />
+    <ClCompile Include="..\..\Src\KhaosTexCfgParser.cpp" />
+    <ClCompile Include="..\..\Src\KhaosTexture.cpp" />
+    <ClCompile Include="..\..\Src\KhaosTextureManager.cpp" />
+    <ClCompile Include="..\..\Src\KhaosTextureObj.cpp" />
+    <ClCompile Include="..\..\Src\KhaosThread.cpp" />
+    <ClCompile Include="..\..\Src\KhaosTimer.cpp" />
+    <ClCompile Include="..\..\Src\KhaosUtil.cpp" />
+    <ClCompile Include="..\..\Src\KhaosVector2.cpp" />
+    <ClCompile Include="..\..\Src\KhaosVector3.cpp" />
+    <ClCompile Include="..\..\Src\KhaosVector4.cpp" />
+    <ClCompile Include="..\..\Src\KhaosVertexIndexBuffer.cpp" />
+    <ClCompile Include="..\..\Src\KhaosViewport.cpp" />
+    <ClCompile Include="..\..\Src\KhaosVolumeProbeNode.cpp" />
+    <ClCompile Include="..\..\Src\KhaosVolumeProbeRender.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Samples\Media\System\AABlendingWeightsCalc.ps" />
+    <None Include="..\..\Samples\Media\System\AABlendingWeightsCalc.vs" />
+    <None Include="..\..\Samples\Media\System\AAEdgeDetection.ps" />
+    <None Include="..\..\Samples\Media\System\AAEdgeDetection.vs" />
+    <None Include="..\..\Samples\Media\System\AAFinal.ps" />
+    <None Include="..\..\Samples\Media\System\AAFinal.vs" />
+    <None Include="..\..\Samples\Media\System\AAFinal2.ps" />
+    <None Include="..\..\Samples\Media\System\AAFinal2.vs" />
+    <None Include="..\..\Samples\Media\System\AATemp.ps" />
+    <None Include="..\..\Samples\Media\System\comm.sl" />
+    <None Include="..\..\Samples\Media\System\commBlur.ps" />
+    <None Include="..\..\Samples\Media\System\commBlur.vs" />
+    <None Include="..\..\Samples\Media\System\commCopy.ps" />
+    <None Include="..\..\Samples\Media\System\commDrawScreen.vs" />
+    <None Include="..\..\Samples\Media\System\commDrawScreenWPOS.vs" />
+    <None Include="..\..\Samples\Media\System\commScale.ps" />
+    <None Include="..\..\Samples\Media\System\commScale.vs" />
+    <None Include="..\..\Samples\Media\System\deferComposite.ps" />
+    <None Include="..\..\Samples\Media\System\deferComposite.vs" />
+    <None Include="..\..\Samples\Media\System\deferPre.ps" />
+    <None Include="..\..\Samples\Media\System\deferPre.vs" />
+    <None Include="..\..\Samples\Media\System\deferUtil.inc" />
+    <None Include="..\..\Samples\Media\System\depthConvert.ps" />
+    <None Include="..\..\Samples\Media\System\downscaleZ.ps" />
+    <None Include="..\..\Samples\Media\System\downscaleZ.vs" />
+    <None Include="..\..\Samples\Media\System\fragUtil.inc" />
+    <None Include="..\..\Samples\Media\System\fxaaUtil.inc" />
+    <None Include="..\..\Samples\Media\System\general.ps" />
+    <None Include="..\..\Samples\Media\System\general.vs" />
+    <None Include="..\..\Samples\Media\System\hdrAdaptedLum.ps" />
+    <None Include="..\..\Samples\Media\System\hdrBrightPass.ps" />
+    <None Include="..\..\Samples\Media\System\hdrFinalScene.ps" />
+    <None Include="..\..\Samples\Media\System\hdrFlaresPass.ps" />
+    <None Include="..\..\Samples\Media\System\hdrInitLumin.ps" />
+    <None Include="..\..\Samples\Media\System\hdrLumIterative.ps" />
+    <None Include="..\..\Samples\Media\System\litAcc.ps" />
+    <None Include="..\..\Samples\Media\System\litAcc.vs" />
+    <None Include="..\..\Samples\Media\System\materialUtil.inc" />
+    <None Include="..\..\Samples\Media\System\pbrUtil.inc" />
+    <None Include="..\..\Samples\Media\System\shadowMask.ps" />
+    <None Include="..\..\Samples\Media\System\shadowMask.vs" />
+    <None Include="..\..\Samples\Media\System\shadowPre.ps" />
+    <None Include="..\..\Samples\Media\System\shadowPre.vs" />
+    <None Include="..\..\Samples\Media\System\shadowUtil.inc" />
+    <None Include="..\..\Samples\Media\System\skySimpleRender.ps" />
+    <None Include="..\..\Samples\Media\System\smaaUtil.inc" />
+    <None Include="..\..\Samples\Media\System\specularAA.ps" />
+    <None Include="..\..\Samples\Media\System\ssao.ps" />
+    <None Include="..\..\Samples\Media\System\ssao.vs" />
+    <None Include="..\..\Samples\Media\System\ssaoFilter.ps" />
+    <None Include="..\..\Samples\Media\System\ssaoFilter.vs" />
+    <None Include="..\..\Samples\Media\System\uirect.ps" />
+    <None Include="..\..\Samples\Media\System\uirect.vs" />
+    <None Include="..\..\Samples\Media\System\volProbeAcc.ps" />
+    <None Include="..\..\Samples\Media\System\volProbeAcc.vs" />
+    <None Include="..\..\Samples\Media\System\vtxUtil.inc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,116 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, PointLitParams)
+        VAR_UNIFORM(float4, position)
+        VAR_UNIFORM(float4, diffuse)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM_PACK_BEGIN(float, SpotLitParams)
+        VAR_UNIFORM(float4, position)
+        VAR_UNIFORM(float3, direction)
+        VAR_UNIFORM(float3, diffuse)
+        VAR_UNIFORM(float3, spotAtts)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM(PointLitParams, pointLits)
+    VAR_UNIFORM(SpotLitParams, spotLits)
+
+    VAR_UNIFORM(float3, cameraPosWorld)
+    VAR_UNIFORM(float3, camVolBias, 3)
+    
+    VAR_UNIFORM(float4, screenScale)
+
+    VAR_UNIFORM(sampler, gbufDiffuse)
+    VAR_UNIFORM(sampler, gbufSpecular)
+
+    VAR_UNIFORM(sampler, mapDepth)
+    VAR_UNIFORM(sampler, mapNormal)
+    VAR_UNIFORM(sampler, mapAO)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float4, wPos, VPOS)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    #include<pbrUtil>
+
+    #define MTR_FORBID_ALL_
+    #define MTR_NEED_FUNC_BASECONV_
+    #include<materialUtil>
+
+    #define USING_FUNC_GETPOSWORLD
+    #include<deferUtil>
+
+END_SECTION()
+    
+
+BEGIN_MAIN_FUNCTION()
+
+    // 从buffer获取位置
+    float2 screenTC = pIn.wPos.xy * screenScale.xy + screenScale.zw;
+    float  sceDepth = tex2D(mapDepth, screenTC).r;
+    float3 objPosWorld = getPosWorldVol( camVolBias, pIn.wPos, sceDepth );
+
+    // 从buffer获取法线
+    float3 objNormWorld = decodeNormal( tex2D(mapNormal, screenTC).xyz );
+
+    // 从buffer获取颜色
+    float4 gBase     = tex2D(gbufDiffuse, screenTC);
+    float4 gSpecInfo = tex2D(gbufSpecular, screenTC);
+    
+    float4 mtrDiffuse;
+    float4 mtrSpecular;
+    material_BaseConv( gBase, gSpecInfo.xyz, mtrDiffuse, mtrSpecular );
+
+    // 点光源
+    #ifdef HAS_POINT_LITS
+        float4 posAtt = pointLits.position;
+
+        float3 lDir = posAtt.xyz - objPosWorld;
+	    float3 lDiff = pointLits.diffuse.rgb * getAttenuation(lDir, posAtt.w, pointLits.diffuse.w);
+        lDir = normalize(lDir);
+    #endif
+
+    // 聚光灯
+    #ifdef HAS_SPOT_LITS
+        float4 posAtt   = spotLits.position;
+        float3 spotAtts = spotLits.spotAtts;
+
+        float3 lDir = posAtt.xyz - objPosWorld;
+	    float att = getAttenuation(lDir, posAtt.w, spotAtts.z); // distance att
+        lDir = normalize(lDir);
+
+        att *= getSpotAtt( spotLits.direction, lDir, spotAtts.x, spotAtts.y ); // spot att
+        float3 lDiff = spotLits.diffuse * att;
+    #endif
+    
+    // 阴影影响
+    #if defined(EN_BIT2)
+        float ssao = tex2D(mapAO, screenTC).r;
+        float finalAO = getFinalAO( mtrDiffuse.a, ssao ); // mtrDiffuse.a = baked ao
+    #else
+        float ssao = 1.0;
+        float finalAO = mtrDiffuse.a;
+    #endif
+
+    #if defined(EN_BIT1)
+        // greatly reduces shadow mapping artifacts
+        float shadowVal = 1.0;
+        float shadowReduce = getShadowReduce( dot(objNormWorld, lDir) );
+        lDiff *= shadowVal * shadowReduce;
+    #else // 没有阴影则用ao
+        lDiff *= finalAO;
+    #endif
+
+    pOut.k_color.rgb = 
+        standShading( mtrDiffuse, mtrSpecular, objPosWorld, objNormWorld, cameraPosWorld, lDir, lDiff );
+    pOut.k_color.a   = 0;
+
+END_MAIN_FUNCTION()
+

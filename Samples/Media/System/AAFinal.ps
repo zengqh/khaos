@@ -1,0 +1,37 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapColor)
+    VAR_UNIFORM(sampler, mapBlend)
+    VAR_UNIFORM(float2, invTargetSize)
+    VAR_UNIFORM(float, gammaValue)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+    VAR_IN(float4, vOffset[2], TEXCOORD1)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    #define SMAA_HLSL_3         1
+    #define SMAA_PRESET_HIGH    1
+    #define SMAA_PIXEL_SIZE     invTargetSize
+    #define SMAA_REPROJECTION   1
+    #include<smaaUtil>
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+    float4 outClr = SMAANeighborhoodBlendingPS( pIn.vTex, pIn.vOffset, mapColor, mapBlend );
+
+#ifdef EN_BIT0
+    pOut.k_color = gammaCorrect( outClr, gammaValue ); // gammaValue=1/gamma
+#else
+    pOut.k_color = outClr;
+#endif
+
+END_MAIN_FUNCTION()
+

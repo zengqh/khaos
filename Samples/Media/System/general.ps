@@ -1,0 +1,167 @@
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, SurfaceParams)
+        VAR_UNIFORM(float4, baseColorA)
+        VAR_UNIFORM(float4, specularA)
+        VAR_UNIFORM(float3, emissive)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM_PACK_BEGIN(float, SpecularMaskParams)
+        VAR_UNIFORM(float4, msrMask)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM_PACK_BEGIN(float, DirLitParams)
+        VAR_UNIFORM(float3, direction)
+        VAR_UNIFORM(float3, diffuse)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM_PACK_BEGIN(float, ShadowParams)
+        VAR_UNIFORM(float4, shadowInfo)
+        VAR_UNIFORM(float4, shadowFade)
+        VAR_UNIFORM(float4, splitZView)
+        VAR_UNIFORM(float4, alignOffsetA)
+        VAR_UNIFORM(float4, alignOffsetB)
+        VAR_UNIFORM(float4, clampRanges, 4)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM_PACK_BEGIN(float, PointLitParams)
+        VAR_UNIFORM(float4, position)
+        VAR_UNIFORM(float4, diffuse)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM_PACK_BEGIN(float, SpotLitParams)
+        VAR_UNIFORM(float4, position)
+        VAR_UNIFORM(float3, direction)
+        VAR_UNIFORM(float3, diffuse)
+        VAR_UNIFORM(float3, spotAtts)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM_PACK_BEGIN(float, AmbParams)
+        VAR_UNIFORM(float3, constColor)
+        VAR_UNIFORM(float3, upperColor)
+        VAR_UNIFORM(float3, lowerColor)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM(SurfaceParams, surfaceInfo)
+    VAR_UNIFORM(SpecularMaskParams, maskSpecular)
+
+    VAR_UNIFORM(sampler,  mapBase)
+    VAR_UNIFORM(sampler,  mapSpecular)
+    VAR_UNIFORM(sampler,  mapEmiss)
+    VAR_UNIFORM(sampler,  mapBump)
+    VAR_UNIFORM(sampler,  mapOpacity)
+    VAR_UNIFORM(sampler,  mapBakedAO)
+    
+    VAR_UNIFORM(AmbParams, ambParas)
+    VAR_UNIFORM(DirLitParams, dirLits)
+    VAR_UNIFORM(PointLitParams, pointLits, MAX_POINT_LIGHTS)
+    VAR_UNIFORM(SpotLitParams, spotLits, MAX_SPOT_LIGHTS)
+    VAR_UNIFORM(int, pointLitsCount)
+    VAR_UNIFORM(int, spotLitsCount)
+
+    VAR_UNIFORM(sampler, mapLight)
+    VAR_UNIFORM(sampler, mapLightB)
+    
+    VAR_UNIFORM(sampler,  mapEnvDiff)
+    VAR_UNIFORM(sampler,  mapEnvSpec)
+    VAR_UNIFORM(sampler,  mapEnvLUT)
+    VAR_UNIFORM(float4,   envMapInfoA)
+
+    VAR_UNIFORM(float3, cameraPosWorld)
+    VAR_UNIFORM(float4, screenScale)
+
+    //VAR_UNIFORM(sampler, mapLitAccA)
+    //VAR_UNIFORM(sampler, mapLitAccB)
+    //VAR_UNIFORM(sampler, mapAO)
+    //VAR_UNIFORM(sampler, mapNormal)
+
+    VAR_UNIFORM(sampler, mapRandom)
+    VAR_UNIFORM(float4, poissonDisk, MAX_POISSON_DISK)
+
+    VAR_UNIFORM(ShadowParams, shadParams)
+    VAR_UNIFORM(sampler, mapShadow0)
+    //VAR_UNIFORM(sampler, mapShadow1)
+    //VAR_UNIFORM(sampler, mapShadow2)
+    //VAR_UNIFORM(sampler, mapShadow3)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    IFDEF(USE_UVPROJ)
+        VAR_IN(float4, wPos, VPOS)
+    ENDIF()
+    IFDEF(USE_TEXCOORD01)
+        VAR_IN(float4, vTex, TEXCOORD0)
+    ENDIF()
+    IFDEF(USE_POS_WORLD)
+        VAR_IN(float3, vPosWorld, TEXCOORD1)
+    ENDIF()
+    IFDEF(!HAS_DEFERRED && USE_NORMAL_WORLD)
+        VAR_IN(float3, vNormalWorld, TEXCOORD2)
+    ENDIF()
+    IFDEF(EN_NORMMAP)
+        VAR_IN(float4, vTangent, TEXCOORD3)
+    ENDIF()
+    IFDEF(EN_VTXCLR)
+        VAR_IN(float4, vVtxClr, TEXCOORD4)
+    ENDIF()
+    IFDEF(!HAS_DEFERRED && HAS_SHADOW)
+        VAR_IN(float4, vPosShadowProj[4], COLOR0)
+    ENDIF()
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+DECLARE_NULL_CUSTOMINFO
+DECLARE_FRAGINFOPASS
+
+#include<pbrUtil>
+#include<materialUtil>
+
+#if !defined(HAS_DEFERRED) && defined(HAS_SHADOW) 
+    // forward shadow config
+    #define SPLIT_FUNC  1
+
+    #if defined(HAS_PSSM4)
+        #define CASCADES_COUNT 4
+    #else
+        #define CASCADES_COUNT 3
+    #endif
+
+    #include<shadowUtil>
+#endif
+
+
+void fragCustomLit( inout FragInfoPass pPass, inout LightInfoPass litPass )
+{
+    float  NdotL = saturate(dot(pPass.normalWorldVec, litPass.lDir));
+    float3 lDiff = litPass.lDiff * NdotL;
+
+    pPass.totalLitDiff += lDiff;
+
+    #ifdef HAS_SPECULAR_LIGHTING
+        float3 vH = normalize(pPass.eyeVec + litPass.lDir);
+        
+        float  NdotH = saturate(dot(pPass.normalWorldVec, vH));
+        float  NdotV = saturate(dot(pPass.normalWorldVec, pPass.eyeVec));
+        float  VdotH = saturate(dot(pPass.eyeVec, vH));
+        
+        pPass.totalLitSpec = 
+            lDiff * calcSpecular(pPass.cSpec.rgb, pPass.cSpec.a, NdotH, NdotV, NdotL, VdotH) + pPass.totalLitSpec;
+    #endif
+}
+
+#include<fragUtil>
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    FragInfoPass pPass;
+    pOut.k_color = fragSharedOutput( pPass, pIn );
+    //pOut.k_color.rgb = pPass.bakedAO;
+END_MAIN_FUNCTION()
+

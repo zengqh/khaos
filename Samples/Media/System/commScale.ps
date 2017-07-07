@@ -1,0 +1,34 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, TexOffsetParams)
+        VAR_UNIFORM(float4, texOffset0)
+        VAR_UNIFORM(float4, texOffset1)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM(sampler, mapInput)
+    VAR_UNIFORM(TexOffsetParams, commScaleParams)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    float4 _c1 = tex2D(mapInput, pIn.vTex + commScaleParams.texOffset0.xy);
+    float4 _c2 = tex2D(mapInput, pIn.vTex + commScaleParams.texOffset0.zw);
+    float4 _c3 = tex2D(mapInput, pIn.vTex + commScaleParams.texOffset1.xy);
+    float4 _c4 = tex2D(mapInput, pIn.vTex + commScaleParams.texOffset1.zw);
+
+    pOut.k_color = (_c1 + _c2 + _c3 + _c4) * 0.25;
+
+END_MAIN_FUNCTION()
+

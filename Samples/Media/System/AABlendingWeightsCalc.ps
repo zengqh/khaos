@@ -1,0 +1,33 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapInput)
+    VAR_UNIFORM(sampler, mapArea)
+    VAR_UNIFORM(sampler, mapSearch)
+    VAR_UNIFORM(float2, invTargetSize)
+    VAR_UNIFORM(float4, cParams0)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+    VAR_IN(float2, vPixcoord, TEXCOORD1)
+    VAR_IN(float4, vOffset[3], TEXCOORD2)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    #define SMAA_HLSL_3         1
+    #define SMAA_PRESET_HIGH    1
+    #define SMAA_PIXEL_SIZE     invTargetSize
+    #include<smaaUtil>
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+    int4 subIdxs = (int4)cParams0;
+    pOut.k_color = SMAABlendingWeightCalculationPS( pIn.vTex, pIn.vPixcoord, pIn.vOffset,
+        mapInput, mapArea, mapSearch, subIdxs );
+END_MAIN_FUNCTION()
+

@@ -1,0 +1,56 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8949721A-760F-4CCA-8E54-52E769C22B6F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Basic", "Samples\Basic\Sample.vcxproj", "{E25F883C-EEAC-4B04-9204-F8261E90682B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C} = {E8D786B6-B80F-425B-9661-9E0ED5BBE20C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Khaos", "Khaos\Khaos.vcxproj", "{E8D786B6-B80F-425B-9661-9E0ED5BBE20C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{839D2BDB-844A-46F4-8327-DA534957A64D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FilePacker", "Tools\FilePacker\FilePacker.vcxproj", "{787CC9B6-847A-49A6-9129-67EF9C818175}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C} = {E8D786B6-B80F-425B-9661-9E0ED5BBE20C}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EnvMapBuilder", "Tools\EnvMapBuilder\EnvMapBuilder.vcxproj", "{F3596B94-0386-455C-9478-F8B58B91D5E2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C} = {E8D786B6-B80F-425B-9661-9E0ED5BBE20C}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E25F883C-EEAC-4B04-9204-F8261E90682B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E25F883C-EEAC-4B04-9204-F8261E90682B}.Debug|Win32.Build.0 = Debug|Win32
+		{E25F883C-EEAC-4B04-9204-F8261E90682B}.Release|Win32.ActiveCfg = Release|Win32
+		{E25F883C-EEAC-4B04-9204-F8261E90682B}.Release|Win32.Build.0 = Release|Win32
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C}.Debug|Win32.Build.0 = Debug|Win32
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C}.Release|Win32.ActiveCfg = Release|Win32
+		{E8D786B6-B80F-425B-9661-9E0ED5BBE20C}.Release|Win32.Build.0 = Release|Win32
+		{787CC9B6-847A-49A6-9129-67EF9C818175}.Debug|Win32.ActiveCfg = Debug|Win32
+		{787CC9B6-847A-49A6-9129-67EF9C818175}.Debug|Win32.Build.0 = Debug|Win32
+		{787CC9B6-847A-49A6-9129-67EF9C818175}.Release|Win32.ActiveCfg = Release|Win32
+		{787CC9B6-847A-49A6-9129-67EF9C818175}.Release|Win32.Build.0 = Release|Win32
+		{F3596B94-0386-455C-9478-F8B58B91D5E2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F3596B94-0386-455C-9478-F8B58B91D5E2}.Debug|Win32.Build.0 = Debug|Win32
+		{F3596B94-0386-455C-9478-F8B58B91D5E2}.Release|Win32.ActiveCfg = Release|Win32
+		{F3596B94-0386-455C-9478-F8B58B91D5E2}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E25F883C-EEAC-4B04-9204-F8261E90682B} = {8949721A-760F-4CCA-8E54-52E769C22B6F}
+		{787CC9B6-847A-49A6-9129-67EF9C818175} = {839D2BDB-844A-46F4-8327-DA534957A64D}
+		{F3596B94-0386-455C-9478-F8B58B91D5E2} = {839D2BDB-844A-46F4-8327-DA534957A64D}
+	EndGlobalSection
+EndGlobal

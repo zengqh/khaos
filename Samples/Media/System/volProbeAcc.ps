@@ -1,0 +1,83 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(float4x4, matW2V)
+    
+    VAR_UNIFORM(float3, cameraPosWorld)
+    VAR_UNIFORM(float3, camVolBias, 3)
+    
+    VAR_UNIFORM(float4, screenScale)
+
+    VAR_UNIFORM(sampler, gbufDiffuse)
+    VAR_UNIFORM(sampler, gbufSpecular)
+
+    VAR_UNIFORM(sampler, mapDepth)
+    VAR_UNIFORM(sampler, mapNormal)
+
+    VAR_UNIFORM(sampler, mapVolR)
+    VAR_UNIFORM(sampler, mapVolG)
+    VAR_UNIFORM(sampler, mapVolB)
+
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float4, wPos, VPOS)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+    #include<pbrUtil>
+
+    #define MTR_FORBID_ALL_
+    #define MTR_NEED_FUNC_BASECONV_
+    #include<materialUtil>
+
+    #define USING_FUNC_GETPOSWORLD
+    #include<deferUtil>
+
+    float reconstructSH4( float4 b, float3 s )
+    {
+        static const float c0 = 1.0 / (2.0 * sqrt(M_PI));
+        static const float c1 = sqrt(3.0) / (2.0 * sqrt(M_PI));
+        static const float4 y = float4(c0, -c1, c1, -c1); // czyx
+
+        return max( dot( float4(1.0, s.z, s.y, s.x), (b * y) ), 0.0 );
+    }
+
+END_SECTION()
+    
+
+BEGIN_MAIN_FUNCTION()
+
+    // 从buffer获取位置
+    float2 screenTC = pIn.wPos.xy * screenScale.xy + screenScale.zw;
+    float  sceDepth = tex2D(mapDepth, screenTC).r;
+    float3 objPosWorld = getPosWorldVol( camVolBias, pIn.wPos, sceDepth );
+
+    float3 objPosInVol = MUL(matW2V, float4(objPosWorld, 1.0)).xyz + 0.5; // [-0.5, 0.5] + 0.5 => [0, 1]
+    
+    // 从buffer获取法线
+    float3 objNormWorld = decodeNormal( tex2D(mapNormal, screenTC).xyz );
+
+    // 从buffer获取颜色
+    float4 gBase     = tex2D(gbufDiffuse, screenTC);
+    float4 gSpecInfo = tex2D(gbufSpecular, screenTC);
+    
+    float4 mtrDiffuse;
+    float4 mtrSpecular;
+    material_BaseConv( gBase, gSpecInfo.xyz, mtrDiffuse, mtrSpecular );
+
+    // 计算sh
+
+    pOut.k_color.r = reconstructSH4( tex3D(mapVolR, objPosInVol), objNormWorld );
+    pOut.k_color.g = reconstructSH4( tex3D(mapVolG, objPosInVol), objNormWorld );
+    pOut.k_color.b = reconstructSH4( tex3D(mapVolB, objPosInVol), objNormWorld );
+
+    pOut.k_color *= mtrDiffuse;
+    pOut.k_color.a = 0;
+
+END_MAIN_FUNCTION()
+

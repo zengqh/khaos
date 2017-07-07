@@ -1,0 +1,53 @@
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapTargetQuarter)
+    VAR_UNIFORM(sampler, mapLum1)
+
+    VAR_UNIFORM(float4, HDRParams0)
+    VAR_UNIFORM(float4, HDRParams1)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+// RangeReducedAdaptedLum
+float eyeAdaption( float fSceneLuminance )
+{
+    // good values: r_hdreyeadaptationbase=0.25, r_hdreyeadaptationfactor=0.5
+    float ret = lerp(HDRParams1.x, fSceneLuminance, HDRParams0.x);
+	return ret;
+}
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+    float4 vSample = tex2D(mapTargetQuarter, pIn.vTex);
+
+    // this way we check for NAN (illegal floats) as HLSL optimized the isnan() away
+    // visible mostly on NVIDIA, if possible this should be removed and no shader should produce NAN
+    vSample.rgb = (vSample.rgb > 10000.0) ? float3(1.0, 1.0, 1.0) : vSample.rgb;
+
+    float fAdaptedLum = tex2D(mapLum1, float2(0.5,0.5)).r;
+
+    float Level = HDRParams0.w; // 1.25
+    float BrightOffset = HDRParams0.y; // 8/64
+    float BrightThreshold = HDRParams0.z;  // 8
+    float fAdaptedLumDest = eyeAdaption(fAdaptedLum);
+
+    // Determine what the pixel's value will be after tone-mapping occurs
+    vSample.rgb *= Level/(fAdaptedLumDest + 1e-6);
+    vSample.rgb -= BrightThreshold;
+    vSample.rgb = max(vSample.rgb, (float3)0.0);  
+    vSample.rgb /= (BrightOffset + vSample.rgb); // map result to 0 to 1 range
+
+    // scale range to keep some precision in darks (gets rescaled down to original value during final tone map scene)
+    pOut.k_color = vSample * 8.0; 
+
+END_MAIN_FUNCTION()
+

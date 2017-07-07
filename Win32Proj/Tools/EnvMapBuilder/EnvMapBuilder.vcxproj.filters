@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="impl">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="lib">
+      <UniqueIdentifier>{c6325595-28da-491b-b550-7d005701b18c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EnvMapBuilder.cpp">
+      <Filter>impl</Filter>
+    </ClCompile>
+    <ClCompile Include="CBBoxInt32.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="CCubeMapProcessor.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageSurface.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorMsg.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="HDRWrite.cpp">
+      <Filter>lib</Filter>
+    </ClCompile>
+    <ClCompile Include="MakeMSRMap.cpp">
+      <Filter>impl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CBBoxInt32.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CCubeMapProcessor.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="CImageSurface.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorMsg.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorMacros.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="HDRWrite.h">
+      <Filter>lib</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvMapBuilder.h">
+      <Filter>impl</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

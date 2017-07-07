@@ -1,0 +1,29 @@
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler, mapTargetQuarter)
+    VAR_UNIFORM(sampler, mapTargetEighth)
+    VAR_UNIFORM(sampler, mapTargetSixteenth)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    float4 cBloom0 = tex2D(mapTargetQuarter, pIn.vTex);
+    float4 cBloom1 = tex2D(mapTargetEighth, pIn.vTex);
+    float4 cBloom2 = tex2D(mapTargetSixteenth, pIn.vTex);
+
+	float4 cBloom = cBloom0 + cBloom1 + cBloom2;
+	
+    pOut.k_color = encodeRGBK(float4(cBloom.rgb, 1), SCENE_HDR_MULTIPLIER, true);
+
+END_MAIN_FUNCTION()
+

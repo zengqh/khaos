@@ -1,0 +1,73 @@
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(float3, cameraPosWorld)
+    VAR_UNIFORM(sampler, mapDepth)
+
+    VAR_UNIFORM(float3, jitterWorld)
+    VAR_UNIFORM(float4x4, matViewProjPrev)
+    VAR_UNIFORM(sampler, mapFrameCurr)
+    VAR_UNIFORM(sampler, mapFramePre)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD0)
+    VAR_IN(float3, vCamVec, TEXCOORD1)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+    #define USING_FUNC_GETPOSWORLD
+    #include<deferUtil>
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+  
+    // 改点的实际位置在前一帧的uv
+	float3 B_posWS = getFastPosWorld(pIn.vTex, pIn.vCamVec-jitterWorld);
+	float4 B_prevHSPos = MUL( matViewProjPrev, float4(B_posWS, 1.0) ); 
+	B_prevHSPos /= B_prevHSPos.w;
+	
+    // 前一帧和当前帧的uv差
+	float2 tcOffsetPrev = (B_prevHSPos.xy /*+ jitterUV*/) - pIn.vTex; 
+    
+#if 0
+    float k = 0.000001;
+    if ( abs(tcOffsetPrev.x) > k || abs(tcOffsetPrev.y) > k )
+    {
+        pOut.k_color = float4(1,0,0,0);
+        return;
+    }
+    else
+    {
+        pOut.k_color = float4(0,1,0,0);
+        return;
+    }
+#endif
+
+#if defined(EN_BIT0) // 开启motion
+	float4 cObjVelocityParams = tex2D(_tex3,IN.baseTC.xy) ; // MotionVector buffer，不过看起来没启用，那么w==0
+    float2 vObjVelocity = DecodeMotionVector( cObjVelocityParams );
+    tcOffsetPrev = cObjVelocityParams.w ? vObjVelocity : tcOffsetPrev; // w=0，那么事实就是走后面的tcOffsetPrev
+#endif
+
+	float4 cCurrM = tex2D(mapFrameCurr, pIn.vTex); // 当前帧
+	float4 cPrevM = tex2D(mapFramePre, pIn.vTex + tcOffsetPrev); // 取上一帧
+
+	float fDeltaV = abs(cCurrM.a * cCurrM.a - cPrevM.a * cPrevM.a) / 5.0;
+	float fWeight = 0.5 * saturate(1.0 - (sqrt(fDeltaV) * 30.0)); // [0,80]
+
+	pOut.k_color = lerp(cCurrM, cPrevM, fWeight); 
+
+    #ifdef EN_BIT1
+        pOut.k_color.a = gammaCorrectAlpha( toLumin2( pOut.k_color.rgb ) );
+    #else
+        pOut.k_color.a = 1;
+    #endif
+    
+END_MAIN_FUNCTION()
+

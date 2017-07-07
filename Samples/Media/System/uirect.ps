@@ -1,0 +1,30 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM(sampler,  mapBase)
+    VAR_UNIFORM(float, gammaValue)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    VAR_IN(float2, vTex, TEXCOORD)
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_color, COLOR)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+    float4 outClr = tex2D(mapBase, pIn.vTex);
+
+        // ×îÖÕÊä³ö
+#ifdef HAS_GAMMA
+    pOut.k_color = gammaCorrect( outClr, gammaValue ); // gammaValue=1/gamma
+#else
+    pOut.k_color = outClr;
+#endif
+
+END_MAIN_FUNCTION()
+

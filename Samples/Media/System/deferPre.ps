@@ -1,0 +1,128 @@
+
+
+BEGIN_DECLARE_UNIFORMS()
+    VAR_UNIFORM_PACK_BEGIN(float, SurfaceParams)
+        VAR_UNIFORM(float4, baseColorA)
+        VAR_UNIFORM(float4, specularA)
+        VAR_UNIFORM(float3, emissive)
+    VAR_UNIFROM_PACK_END()
+    
+    VAR_UNIFORM_PACK_BEGIN(float, SpecularMaskParams)
+        VAR_UNIFORM(float4, msrMask)
+    VAR_UNIFROM_PACK_END()
+
+    VAR_UNIFORM(SurfaceParams, surfaceInfo)
+    VAR_UNIFORM(SpecularMaskParams, maskSpecular)
+
+    VAR_UNIFORM(sampler,  mapBase)
+    VAR_UNIFORM(sampler,  mapSpecular)
+    VAR_UNIFORM(sampler,  mapEmiss)
+    VAR_UNIFORM(sampler,  mapBump)
+    VAR_UNIFORM(sampler,  mapOpacity)
+    VAR_UNIFORM(sampler,  mapBakedAO)
+
+    VAR_UNIFORM(sampler, mapLight)
+    VAR_UNIFORM(sampler, mapLightB)
+    
+    VAR_UNIFORM(sampler,  mapEnvDiff)
+    VAR_UNIFORM(sampler,  mapEnvSpec)
+    VAR_UNIFORM(sampler,  mapEnvLUT)
+    VAR_UNIFORM(float4,   envMapInfoA)
+
+    VAR_UNIFORM(sampler, mapNormalFitting)
+    VAR_UNIFORM(float3, cameraPosWorld)
+END_DECLARE_UNIFORMS()
+
+BEGIN_DECLARE_INS()
+    IFDEF(USE_TEXCOORD01)
+        VAR_IN(float4, vTex, TEXCOORD0)
+    ENDIF()
+    IFDEF(USE_POS_WORLD)
+        VAR_IN(float3, vPosWorld, TEXCOORD1)
+    ENDIF()
+    IFDEF(!HAS_DEFERRED && USE_NORMAL_WORLD)
+        VAR_IN(float3, vNormalWorld, TEXCOORD2)
+    ENDIF()
+    IFDEF(EN_NORMMAP)
+        VAR_IN(float4, vTangent, TEXCOORD3)
+    ENDIF()
+    IFDEF(EN_VTXCLR)
+        VAR_IN(float4, vVtxClr, TEXCOORD4)
+    ENDIF()
+END_DECLARE_INS()
+
+BEGIN_DECLARE_OUTS()
+    VAR_OUT(float4, k_base, COLOR0)
+    VAR_OUT(float4, k_specular, COLOR1)
+    VAR_OUT(float4, k_normal, COLOR2)
+    //VAR_OUT(float4, k_depth, COLOR3)
+    VAR_OUT(float4, k_scene, COLOR3)
+END_DECLARE_OUTS()
+
+BEGIN_SECTION()
+
+    struct CustomInfo
+    {
+        float4 cBase;
+        float3 msr;
+    };
+
+    DECLARE_FRAGINFOPASS
+
+    #define MTR_NEED_ORIPARAS_
+    #define MTR_ENSURE_DEFAULT_VALUE_ 1
+
+    #include<pbrUtil>
+    #include<materialUtil>
+    #include<fragUtil>
+
+#ifdef HAS_NORMAL_DIRECT_COMPRESS
+    float3 compressUnsignedNormalToNormalsBuffer( float3 vNormal )
+    {
+        //return mad( normalize(vNormal), 0.5, 0.5 );
+        return mad( vNormal, 0.5, 0.5 );
+    }
+#else
+    float3 compressUnsignedNormalToNormalsBuffer( float3 vNormal )
+    {
+        //vNormal = normalize(vNormal);
+        float3 vNormalUns = abs(vNormal);
+        float maxNAbs = max(vNormalUns.z, max(vNormalUns.x, vNormalUns.y));
+      
+        float2 vTexCoord = vNormalUns.z<maxNAbs?(vNormalUns.y<maxNAbs?vNormalUns.yz:vNormalUns.xz):vNormalUns.xy;
+        vTexCoord = vTexCoord.x < vTexCoord.y ? vTexCoord.yx : vTexCoord.xy;
+        vTexCoord.y /= vTexCoord.x;
+
+        float fFittingScale = tex2Dlod(mapNormalFitting, float4(vTexCoord, 0, 0)).a;
+        //float fFittingScale = tex2D(mapNormalFitting, vTexCoord).a;
+        vNormal *= fFittingScale / maxNAbs;
+
+        return mad( vNormal, 0.5, 0.5 );
+    }
+#endif
+
+END_SECTION()
+
+BEGIN_MAIN_FUNCTION()
+
+    FragInfoPass pPass;
+    pOut.k_scene = fragSharedOutput( pPass, pIn ); // scene color( indirect light ... )
+    pOut.k_scene.a = 0; // must clear 0, alpha channel for temp aa
+
+    // base albedo | baked ao
+    pOut.k_base   = pPass.userData.cBase; 
+    pOut.k_base.a = pPass.bakedAO;
+    
+    // metallic | specular | roughness
+    pOut.k_specular.rgb = pPass.userData.msr;
+    pOut.k_specular.a = 0; // no used here
+
+    // normal | shadow tmp
+    pOut.k_normal.xyz = compressUnsignedNormalToNormalsBuffer( pPass.normalWorldVec ); 
+    pOut.k_normal.w = 1.0;
+
+    // depth [0, 1] in view space
+    //pOut.k_depth = pIn.vNormalWorld.w;
+
+END_MAIN_FUNCTION()
+
